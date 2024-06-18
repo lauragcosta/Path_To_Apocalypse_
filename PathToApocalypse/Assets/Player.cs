@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class simplemove : MonoBehaviour
+public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 2f; // Speed at which the character moves
     private Rigidbody2D rb2D;
