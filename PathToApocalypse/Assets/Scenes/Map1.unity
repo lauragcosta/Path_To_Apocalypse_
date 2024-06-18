@@ -737,6 +737,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &836957369 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5014984532324741537, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
+  m_PrefabInstance: {fileID: 1825130711}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &836957370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836957369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cbc32954e029a419023aca8e7b11be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+--- !u!4 &836957375 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1486203948618649343, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
+  m_PrefabInstance: {fileID: 1825130711}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &854138177
 GameObject:
   m_ObjectHideFlags: 0
@@ -1257,7 +1280,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -350429859
   m_SortingLayer: 1
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: -209072318, guid: ac0441bdeb84dab478bd1e6401dddada, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1558,7 +1581,7 @@ Camera:
   far clip plane: 1000
   field of view: 35.30814
   orthographic: 1
-  orthographic size: 2.021627
+  orthographic size: 2.5180361
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1583,11 +1606,11 @@ Transform:
   m_GameObject: {fileID: 1472014581}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.8400002, y: -1.46, z: -10}
+  m_LocalPosition: {x: -0.06, y: -0.26499605, z: -10.016023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 836957375}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1472014585
 MonoBehaviour:
@@ -46604,13 +46627,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 848825063697197578, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1486203948618649343, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.8624637
+      value: -0.84
       objectReference: {fileID: 0}
     - target: {fileID: 1486203948618649343, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.195004
+      value: -0.77
       objectReference: {fileID: 0}
     - target: {fileID: 1486203948618649343, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
       propertyPath: m_LocalPosition.z
@@ -46658,7 +46685,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8558892802820926120, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
       propertyPath: m_SortingOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8558892802820926120, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
       propertyPath: m_SortingLayerID
@@ -46666,8 +46693,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1486203948618649343, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1472014584}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5014984532324741537, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 836957370}
   m_SourcePrefab: {fileID: 100100000, guid: 5e21cc11d2495c446aa48fab45342a93, type: 3}
 --- !u!1 &1894463081
 GameObject:
@@ -46863,7 +46896,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -350429859
   m_SortingLayer: 1
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -47677,7 +47710,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -350429859
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 2.65625, y: 0.5625, z: 0}
   m_MaxChunkCount: 16
@@ -65286,7 +65319,6 @@ Canvas:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1472014584}
   - {fileID: 462312984}
   - {fileID: 1177294157}
   - {fileID: 719264467}
