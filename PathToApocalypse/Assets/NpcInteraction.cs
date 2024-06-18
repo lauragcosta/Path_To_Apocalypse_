@@ -29,16 +29,17 @@ public class NpcInteraction : MonoBehaviour
     // Check when another collider enters the trigger area
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("player")) 
+        if (other.CompareTag("Player")) 
         {
             isCharacterInside = true;
+            Debug.Log("heyyy");
         }
     }
 
     // Check when another collider exits the trigger area
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("player")) 
+        if (other.CompareTag("Player")) 
         {
             isCharacterInside = false;
         }
