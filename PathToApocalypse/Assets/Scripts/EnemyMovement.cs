@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-	public float moveSpeed = 2f;
-	public float idleTime = 2f;
-	public float wanderTime = 3f;
+	public float moveSpeed = .5f;
+	public int damage = 10;
 	private Animator animator;
 	private Vector2 movement;
 	private Rigidbody2D rb;
@@ -34,13 +33,13 @@ public class EnemyMovement : MonoBehaviour
 			{
 				isMoving = false;
 				movement = Vector2.zero;
-				yield return new WaitForSeconds(idleTime);
+				yield return new WaitForSeconds(Random.Range(1f, 3f));
 			}
 			else
 			{
 				isMoving = true;
 				movement = GetRandomDirection();
-				yield return new WaitForSeconds(wanderTime);
+				yield return new WaitForSeconds(Random.Range(2f, 4f));
 			}
 		}
 	}
@@ -72,5 +71,20 @@ public class EnemyMovement : MonoBehaviour
 		{
 			movement = GetRandomDirection();
 		}
+
+		if (collision.gameObject.CompareTag("Player"))
+		{
+			animator.SetTrigger("Attack");
+			PlayerMovement player = collision.gameObject.GetComponent<PlayerMovement>();
+			if (player != null)
+			{
+				player.TakeDamage(damage);
+			}
+		}
+	}
+
+	public void TakeDamage(int damage)
+	{
+		animator.SetTrigger("Hurt");
 	}
 }

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-	public float moveSpeed = 5f;
+	public float moveSpeed = 1f;
+	public int damage = 20;
 	private Animator animator;
 	private Vector2 movement;
 	private Rigidbody2D rb;
+	public int health = 100;
 
 	void Start()
 	{
@@ -24,7 +26,6 @@ public class PlayerMovement : MonoBehaviour
 		animator.SetFloat("Vertical", movement.y);
 		animator.SetBool("IsMoving", movement.sqrMagnitude > 0);
 
-		//MUDAR TECLA
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			animator.SetTrigger("Attack");
@@ -40,13 +41,20 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 
-	public void TakeDamage()
+	public void TakeDamage(int damage)
 	{
+		health -= damage;
 		animator.SetTrigger("Hurt");
+
+		if (health <= 0)
+		{
+			Die();
+		}
 	}
 
-	public void Attack()
+	private void Die()
 	{
-		animator.SetTrigger("Attack");
+		Debug.Log("Player has died.");
+		//MUDAR SCENE
 	}
 }
