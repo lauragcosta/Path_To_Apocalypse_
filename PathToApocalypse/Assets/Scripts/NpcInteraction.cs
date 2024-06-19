@@ -6,7 +6,28 @@ public class NpcInteraction : MonoBehaviour
     private bool isCharacterInside = false;
     private int currentClicks = 0;
     private List<GameObject> textObjects = new List<GameObject>();
+    private Transform speechBubbleCanvas;
+    private Transform speechBubble;
+    private Transform confirmation;
 
+    private void Start()
+    {
+        confirmation = transform.Find("Confirmation");
+        confirmation.gameObject.SetActive(false);
+        speechBubbleCanvas = transform.Find("SpeechBubbleCanvas");
+        if (speechBubbleCanvas != null)
+        {
+            speechBubble = speechBubbleCanvas.Find("SpeechBubble");
+            if (speechBubble != null)
+            {
+                FindAllTextObjects(speechBubble, textObjects);
+                if (textObjects.Count > 0)
+                {
+                    textObjects[currentClicks].SetActive(true);
+                }
+            }
+        }
+    }
     void Update()
     {
         if (isCharacterInside && Input.GetKeyDown(KeyCode.Space))
@@ -19,6 +40,16 @@ public class NpcInteraction : MonoBehaviour
                 // Move to the next text object
                 currentClicks = PassToNextText(currentClicks);
             }
+
+            // If all text objects have been shown, show the confirmation
+            if (currentClicks >= textObjects.Count)
+            {
+                speechBubbleCanvas.gameObject.SetActive(false);
+                if (confirmation != null)
+                {
+                    confirmation.gameObject.SetActive(true);
+                }
+            }
         }
     }
 
@@ -28,17 +59,14 @@ public class NpcInteraction : MonoBehaviour
         {
             isCharacterInside = true;
             currentClicks = 0; // Reset clicks when entering the trigger
-            textObjects.Clear(); // Clear the list to avoid duplicates
-
-            Transform speechBubbleCanvas = transform.Find("SpeechBubbleCanvas");
-            if (speechBubbleCanvas != null)
+            if (speechBubbleCanvas != null && speechBubble != null)
             {
-                Transform speechBubble = speechBubbleCanvas.Find("SpeechBubble");
-                if (speechBubble != null)
+                // Activate the SpeechBubbleCanvas and the first text object
+                speechBubbleCanvas.gameObject.SetActive(true);
+                speechBubble.gameObject.SetActive(true);
+                if (textObjects.Count > 0)
                 {
-                    speechBubble.gameObject.SetActive(true);
-                    speechBubbleCanvas.gameObject.SetActive(true); // Activate the SpeechBubbleCanvas
-                    FindAllTextObjects(speechBubble, textObjects);
+                    textObjects[currentClicks].SetActive(true);
                 }
             }
         }
@@ -54,11 +82,8 @@ public class NpcInteraction : MonoBehaviour
             {
                 textObj.SetActive(false);
             }
-            Transform speechBubbleCanvas = transform.Find("SpeechBubbleCanvas");
-            if (speechBubbleCanvas != null)
-            {
-                speechBubbleCanvas.gameObject.SetActive(false); // Deactivate the SpeechBubbleCanvas
-            }
+            speechBubbleCanvas.gameObject.SetActive(false); // Deactivate the SpeechBubbleCanvas
+            confirmation.gameObject.SetActive(false);
         }
     }
 
@@ -82,6 +107,7 @@ public class NpcInteraction : MonoBehaviour
         {
             textObjects[currentClicks].SetActive(true); // Activate the next text object
         }
+    
         return currentClicks;
     }
 }

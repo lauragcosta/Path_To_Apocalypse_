@@ -64834,6 +64834,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Text
       objectReference: {fileID: 0}
+    - target: {fileID: 506981911289681755, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2342939189301163211, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4564867430886612443, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
       propertyPath: m_Name
       value: John (NPC)
@@ -64842,6 +64850,16 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1472014583}
+    - target: {fileID: 5323324894720904425, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_text
+      value: 'Enter the building?
+
+
+        (A turn based combat will start)
+
+        [Click
+        space to confirm]'
+      objectReference: {fileID: 0}
     - target: {fileID: 5748003784427798867, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
       propertyPath: m_Name
       value: SpeechBubbleCanvas
@@ -64890,17 +64908,45 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1472014583}
+    - target: {fileID: 6068277235952394305, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5404961
+      objectReference: {fileID: 0}
+    - target: {fileID: 6068277235952394305, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2749423
+      objectReference: {fileID: 0}
+    - target: {fileID: 6068277235952394305, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 6068277235952394305, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.035
+      objectReference: {fileID: 0}
     - target: {fileID: 6185645737822657232, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1472014583}
-    - target: {fileID: 7566880023392044934, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 6486405056164635527, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 234.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 6486405056164635527, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 63.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 6486405056164635527, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -94.3
       objectReference: {fileID: 0}
     - target: {fileID: 8055234743377112968, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
       propertyPath: m_Name
       value: Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055234743377112968, guid: 6beab2650c93bb54785358ceafc9d17c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
