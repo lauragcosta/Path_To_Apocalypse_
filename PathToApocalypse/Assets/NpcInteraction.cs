@@ -1,47 +1,87 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NpcInteraction : MonoBehaviour
 {
-    private Collider2D myCollider;
     private bool isCharacterInside = false;
-
-    void Start()
-    {
-        // Get the Collider2D component attached to this GameObject
-        myCollider = GetComponent<Collider2D>();
-    }
+    private int currentClicks = 0;
+    private List<GameObject> textObjects = new List<GameObject>();
 
     void Update()
     {
-        // Check if the spacebar is pressed
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (isCharacterInside && Input.GetKeyDown(KeyCode.Space))
         {
-            // Toggle the enabled state of the collider if another character is inside
-            if (isCharacterInside)
+            // Ensure currentClicks does not go out of bounds
+            if (currentClicks < textObjects.Count)
             {
-                myCollider.enabled = !myCollider.enabled;
+                // Deactivate the current text object
+                textObjects[currentClicks].SetActive(false);
+                // Move to the next text object
+                currentClicks = PassToNextText(currentClicks);
             }
         }
     }
 
-    // Check when another collider enters the trigger area
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.CompareTag("Player"))
         {
             isCharacterInside = true;
-            Debug.Log("heyyy");
+            currentClicks = 0; // Reset clicks when entering the trigger
+            textObjects.Clear(); // Clear the list to avoid duplicates
+
+            Transform speechBubbleCanvas = transform.Find("SpeechBubbleCanvas");
+            if (speechBubbleCanvas != null)
+            {
+                Transform speechBubble = speechBubbleCanvas.Find("SpeechBubble");
+                if (speechBubble != null)
+                {
+                    speechBubble.gameObject.SetActive(true);
+                    speechBubbleCanvas.gameObject.SetActive(true); // Activate the SpeechBubbleCanvas
+                    FindAllTextObjects(speechBubble, textObjects);
+                }
+            }
         }
     }
 
-    // Check when another collider exits the trigger area
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.CompareTag("Player"))
         {
             isCharacterInside = false;
+            // Optionally deactivate all text objects when player exits
+            foreach (var textObj in textObjects)
+            {
+                textObj.SetActive(false);
+            }
+            Transform speechBubbleCanvas = transform.Find("SpeechBubbleCanvas");
+            if (speechBubbleCanvas != null)
+            {
+                speechBubbleCanvas.gameObject.SetActive(false); // Deactivate the SpeechBubbleCanvas
+            }
         }
+    }
+
+    // Recursive method to find all "Text" objects
+    void FindAllTextObjects(Transform parent, List<GameObject> list)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == "Text")
+            {
+                list.Add(child.gameObject);
+            }
+            FindAllTextObjects(child, list); // Recursive call
+        }
+    }
+
+    int PassToNextText(int currentClicks)
+    {
+        currentClicks++; // Move to the next click count
+        if (currentClicks < textObjects.Count)
+        {
+            textObjects[currentClicks].SetActive(true); // Activate the next text object
+        }
+        return currentClicks;
     }
 }
