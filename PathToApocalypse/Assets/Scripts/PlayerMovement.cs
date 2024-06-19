@@ -7,10 +7,12 @@ public class PlayerMovement : MonoBehaviour
 	public float moveSpeed = 5f;
 	private Animator animator;
 	private Vector2 movement;
+	private Rigidbody2D rb;
 
 	void Start()
 	{
 		animator = GetComponent<Animator>();
+		rb = GetComponent<Rigidbody2D>();
 	}
 
 	void Update()
@@ -22,7 +24,29 @@ public class PlayerMovement : MonoBehaviour
 		animator.SetFloat("Vertical", movement.y);
 		animator.SetBool("IsMoving", movement.sqrMagnitude > 0);
 
-		Vector3 moveDirection = new Vector3(movement.x, movement.y, 0).normalized;
-		transform.position += moveDirection * moveSpeed * Time.deltaTime;
+		//MUDAR TECLA
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			animator.SetTrigger("Attack");
+		}
+	}
+
+	void FixedUpdate()
+	{
+		if (animator.GetBool("IsMoving"))
+		{
+			Vector3 moveDirection = new Vector3(movement.x, movement.y, 0).normalized;
+			rb.MovePosition(rb.position + (Vector2)moveDirection * moveSpeed * Time.fixedDeltaTime);
+		}
+	}
+
+	public void TakeDamage()
+	{
+		animator.SetTrigger("Hurt");
+	}
+
+	public void Attack()
+	{
+		animator.SetTrigger("Attack");
 	}
 }
