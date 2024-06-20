@@ -1,32 +1,79 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-	public float moveSpeed = 0.5f;
-	public int damage = 10;
-	private Animator animator;
-	private Vector2 movement;
-	private Rigidbody2D rb;
-	private bool isMoving = false;
-	private bool isAttacking = false;  // Flag to indicate if the enemy is attacking
+    private GameObject player;
+    private NavMeshAgent agent;
+    private Animator animator;
+	private float maxDistance = 3f;
+    //private bool isMoving = false;
+    //private bool isAttacking = false;  // Flag to indicate if the enemy is attacking
 
-	void Start()
+
+    void Start()
 	{
 		animator = GetComponent<Animator>();
-		rb = GetComponent<Rigidbody2D>();
-		StartCoroutine(WanderRoutine());
-	}
+        agent = GetComponent<NavMeshAgent>();
+
+        
+    }
 
 	void Update()
 	{
-		// Update animation parameters
-		animator.SetFloat("Horizontal", movement.x);
-		animator.SetFloat("Vertical", movement.y);
-		animator.SetBool("IsMoving", isMoving);
-	}
+		UpdateAnimation();
+    }
 
+   private void UpdateAnimation()
+    {
+        // Obtém a velocidade do NavMeshAgent
+        Vector3 navMeshVelocity = agent.velocity;
+
+        // Converte a velocidade do NavMeshAgent para um vetor 2D
+        Vector2 movement = new Vector2(navMeshVelocity.x, navMeshVelocity.y);
+
+        // Atualiza os parâmetros da animação
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetBool("IsMoving", movement.magnitude > 0.1f);
+
+        if (movement.magnitude > 1f)
+        {
+            movement.Normalize();
+        }
+    }
+
+
+
+    public void MoveEnemy()
+	{
+       
+            // Calcula a direção até o jogador
+            Vector3 direction = player.transform.position - transform.position;
+            float distanceToPlayer = direction.magnitude;
+
+            // Verifica se a distância até o jogador é maior que a distância máxima permitida
+            if (distanceToPlayer > maxDistance)
+            {
+                float randomScale = Random.Range(1f, maxDistance);
+                // Calcula o ponto dentro da distância máxima ao longo da direção até o jogador
+                Vector3 targetPosition = transform.position + direction.normalized * randomScale;
+
+                // Define o destino do NavMeshAgent para o ponto dentro da distância máxima
+                agent.SetDestination(targetPosition);
+
+            }
+        
+    }
+
+    public void SetPlayer(GameObject player)
+    {
+        this.player = player;
+    }
+
+    /*
 	IEnumerator WanderRoutine()
 	{
 		while (true)
@@ -125,4 +172,5 @@ public class EnemyMovement : MonoBehaviour
 		animator.SetTrigger("Hurt");
 		// Handle enemy health reduction and potential death here
 	}
+	*/
 }
