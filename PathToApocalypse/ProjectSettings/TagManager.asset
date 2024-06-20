@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - NPC
+  - Enemy
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -44,4 +46,7 @@ TagManager:
     locked: 0
   - name: city
     uniqueID: 3944537437
+    locked: 0
+  - name: JohnFight
+    uniqueID: 887453883
     locked: 0

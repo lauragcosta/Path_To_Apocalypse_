@@ -8,7 +8,7 @@ public class PlayerHealth : ScriptableObject
     [SerializeField] private int hunger;
     [SerializeField] private int thirst;
     [SerializeField] private int health;
-    // Start is called before the first frame update
+ 
     public int Hunger
     {
         get { return hunger; }
