@@ -9,13 +9,18 @@ public class PlayerStats : MonoBehaviour
     public Slider healthBar;
     public Slider thirstBar;
     public Slider hungerBar;
-    [SerializeField] private TextMeshPro objectivesText;
+    [SerializeField] private TextMeshProUGUI objectivesText;
     private List<GameObject> listOfNpcs = new List<GameObject>();
     private Transform npcBox;
 
     private void Start()
     {
         npcBox = transform.Find("Npcs");
+        if (npcBox != null)
+        {
+            FindAllNpcObjects(npcBox, listOfNpcs);
+            UpdateObjectives();
+        }
         UpdateHealthBar();
         UpdateThirstBar();
         UpdateHungerBar();
@@ -23,7 +28,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        FindAllNpcObjects(npcBox, listOfNpcs);
+        // You may want to call this less frequently
         UpdateHealthBar();
         UpdateThirstBar();
         UpdateHungerBar();
@@ -77,10 +82,9 @@ public class PlayerStats : MonoBehaviour
             FindAllNpcObjects(child, list); // Recursive call
         }
     }
+
     void UpdateObjectives()
     {
-
+        objectivesText.text = $"Objectives\r\nHelp people around the map: {listOfNpcs.Count}";
     }
-
-
 }
