@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
+
 
 public class Level1ApartmentFight : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class Level1ApartmentFight : MonoBehaviour
     private bool enemyTurn = false;
     private bool playerTurn = true;
     private bool hasMoved = false;
+
     void Start()
     {
         int randomValue = Random.Range(3, 9);
@@ -78,7 +81,7 @@ public class Level1ApartmentFight : MonoBehaviour
         yield return new WaitForSeconds(3);
         // Executa o movimento do inimigo atual
         MoveEnemy();
-       
+        Invoke("EndEnemyTurn",1f);
     }
 
     private void MoveEnemy()
@@ -91,13 +94,8 @@ public class Level1ApartmentFight : MonoBehaviour
         EnemyMovement enemyScript = randomEnemy.GetComponent<EnemyMovement>();
         enemyScript.MoveEnemy();
 
-        EndEnemyTurn();
     }
 
-    public void EnemyTurn()
-    {
-        enemyTurn=true;
-    }
 
     private void EndEnemyTurn()
     {
@@ -119,6 +117,16 @@ public class Level1ApartmentFight : MonoBehaviour
       
         PlayerControllerTurn playerScript = player.GetComponent<PlayerControllerTurn>();
         playerScript.PlayerTurn();
+    }
+
+    public bool PlayerTurn()
+    {
+        return playerTurn;
+    }
+
+    public bool EnemyTurn() 
+    {
+        return enemyTurn;
     }
 }
 
