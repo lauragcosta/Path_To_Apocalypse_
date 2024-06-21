@@ -48,4 +48,9 @@ public class SwordScript : MonoBehaviour
     {
         takeDamage = false;
     }
+
+    public void SetDamage(int damage)
+    {
+        this.damage = damage;
+    }
 }

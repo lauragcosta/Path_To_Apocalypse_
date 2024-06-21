@@ -47,7 +47,6 @@ public class Level1ApartmentFight : MonoBehaviour
             // Verifica se o jogador já se moveu
             if (hasMoved && IsPlayerStopped())
             {
-                // Se o jogador já se moveu e está parado, inicia o turno dos inimigos
                 StartEnemyTurn();
             }
         }
