@@ -11,11 +11,10 @@ public class PlayerStats : MonoBehaviour
     public Slider hungerBar;
     [SerializeField] private TextMeshProUGUI objectivesText;
     private List<GameObject> listOfNpcs = new List<GameObject>();
-    private Transform npcBox;
+    [SerializeField] private Transform npcBox;
 
     private void Start()
     {
-        npcBox = transform.Find("Npcs");
         if (npcBox != null)
         {
             FindAllNpcObjects(npcBox, listOfNpcs);
@@ -28,6 +27,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+
         // You may want to call this less frequently
         UpdateHealthBar();
         UpdateThirstBar();
