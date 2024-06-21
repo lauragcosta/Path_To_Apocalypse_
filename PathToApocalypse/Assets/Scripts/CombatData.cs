@@ -5,7 +5,7 @@ public class CombatData : ScriptableObject
 {
     public int difficulty;
     public RewardType rewardType;
-    public Need rewardNeed;
+    public Need rewardNeed; // Optional parameter for a need
     public GameObject rewardPrefab;  // Optional parameter for a prefab
 }
 
