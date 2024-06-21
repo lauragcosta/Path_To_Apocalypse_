@@ -15,6 +15,7 @@ public class PlayerControllerTurn : MonoBehaviour
     [SerializeField] private TextMeshProUGUI probabilityText; // Para TextMeshPro
     [SerializeField] private Button attack1;
     [SerializeField] private Button attack2;
+    [SerializeField] private Button attack3;
 
     private NavMeshAgent agent;
     private Animator animator;
@@ -25,9 +26,9 @@ public class PlayerControllerTurn : MonoBehaviour
     private GameObject instantiatedWeapon;
     [SerializeField]private int life;
     private bool takeDamage = false;
-    private int damage = 10;
-    private int damageOne = 20;
-    private int damageTwo = 30;
+    private int damage = 15;
+    private int damageOne = 25;
+    private int damageTwo = 35;
 
 
     // Start is called before the first frame update
@@ -51,7 +52,14 @@ public class PlayerControllerTurn : MonoBehaviour
         probabilityText.gameObject.SetActive(false);
         attack1.gameObject.SetActive(false);
         attack2.gameObject.SetActive(false);
-        
+        attack3.gameObject.SetActive(false);
+        TextMeshProUGUI attackText = attack1.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI attack1Text = attack2.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI attack2Text = attack3.GetComponentInChildren<TextMeshProUGUI>();
+
+        attackText.text = "Attack 1(" + damage + "Damage)";
+        attack1Text.text = "Attack 2(" + damageOne + "Damage)";
+        attack2Text.text = "Attack 3(" + damageTwo + "Damage)";
     }
 
     void Update()
@@ -66,25 +74,37 @@ public class PlayerControllerTurn : MonoBehaviour
                     Vector2 raycastPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     RaycastHit2D hit = Physics2D.Raycast(raycastPoint, Vector2.zero);
 
+                    
+
                     if (hit.collider != null) // Verifica se o Raycast colidiu com algum objeto
                     {
                         if (hit.collider.CompareTag("Enemy")) // Verifica se o objeto colidido tem a tag "Enemy"
                         {
-                            
+                               
                             // Coloque aqui a lógica que você deseja executar ao clicar em um inimigo
                             EnemyMovement enemyScript = hit.collider.GetComponent<EnemyMovement>();
+                            Vector3 enemyPosition = hit.collider.transform.position;
                             float distance = Vector3.Distance(agent.transform.position, hit.collider.transform.position);
                             if (distance <= 5f)
                             {
                                 probabilityText.gameObject.SetActive(true);
                                 attack1.gameObject.SetActive(true);
                                 attack2.gameObject.SetActive(true);
+                                attack3.gameObject.SetActive(true);
 
-                                attack1.onClick.AddListener(MovePlayer);
-                                attack2.onClick.AddListener(MovePlayer);
+
+
+                                attack1.onClick.AddListener(() => MovePlayerWithAttack(enemyPosition));
+                                attack2.onClick.AddListener(() => MovePlayerWithAttack1(enemyPosition));
+                                attack3.onClick.AddListener(() => MovePlayerWithAttack2(enemyPosition));
+
                             }
                             else
                             {
+                                probabilityText.gameObject.SetActive(false);
+                                attack1.gameObject.SetActive(false);
+                                attack2.gameObject.SetActive(false);
+                                attack3.gameObject.SetActive(false);
                                 MovePlayer();
                             }
                         }
@@ -92,6 +112,10 @@ public class PlayerControllerTurn : MonoBehaviour
                     }
                     else
                     {
+                        probabilityText.gameObject.SetActive(false);
+                        attack1.gameObject.SetActive(false);
+                        attack2.gameObject.SetActive(false);
+                        attack3.gameObject.SetActive(false);
                         MovePlayer();
                     }
                 }
@@ -163,6 +187,45 @@ public class PlayerControllerTurn : MonoBehaviour
         return false;
     }
 
+    private void MovePlayerWithAttack(Vector3 targetPosition)
+    {
+        probabilityText.gameObject.SetActive(false);
+        attack1.gameObject.SetActive(false);
+        attack2.gameObject.SetActive(false);
+        attack3.gameObject.SetActive(false);
+        SwordScript swordScript = weapon.GetComponent<SwordScript>();
+        swordScript.SetDamage(damage);
+        Invoke("DelayPlayerMoved", 1f);
+        agent.SetDestination(targetPosition);
+        PlayerTurnRoutine();
+    }
+
+    private void MovePlayerWithAttack1(Vector3 targetPosition)
+    {
+        probabilityText.gameObject.SetActive(false);
+        attack1.gameObject.SetActive(false);
+        attack2.gameObject.SetActive(false);
+        attack3.gameObject.SetActive(false);
+        SwordScript swordScript = weapon.GetComponent<SwordScript>();
+        swordScript.SetDamage(damageOne);
+        Invoke("DelayPlayerMoved", 1f);
+        agent.SetDestination(targetPosition);
+        PlayerTurnRoutine();
+    }
+
+    private void MovePlayerWithAttack2(Vector3 targetPosition)
+    {
+        probabilityText.gameObject.SetActive(false);
+        attack1.gameObject.SetActive(false);
+        attack2.gameObject.SetActive(false);
+        attack3.gameObject.SetActive(false);
+        SwordScript swordScript = weapon.GetComponent<SwordScript>();
+        swordScript.SetDamage(damageTwo);
+        Invoke("DelayPlayerMoved", 1f);
+        agent.SetDestination(targetPosition);
+        PlayerTurnRoutine();
+    }
+
     private void MovePlayer()
     {
         Vector2 raycastPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -180,11 +243,17 @@ public class PlayerControllerTurn : MonoBehaviour
             // Define o destino do NavMeshAgent para o ponto clicado diretamente se estiver dentro da distância máxima
             targetPosition = raycastPoint;
         }
-        Level1ApartmentFight level1ApartmentScript = mainCamera.GetComponent<Level1ApartmentFight>();
-        level1ApartmentScript.PlayerMoved();
+
+        Invoke("DelayPlayerMoved", 1f);
 
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
+    }
+
+    private void DelayPlayerMoved()
+    {
+        Level1ApartmentFight level1ApartmentScript = mainCamera.GetComponent<Level1ApartmentFight>();
+        level1ApartmentScript.PlayerMoved();
     }
 
     private IEnumerator PlayerTurnRoutine()
@@ -264,7 +333,7 @@ public class PlayerControllerTurn : MonoBehaviour
             Vector3 directionAwayFromPlayer = transform.position.normalized;
 
             // Adiciona um valor aleatório para a direção para não ser sempre na mesma direção
-            directionAwayFromPlayer += new Vector3(Random.Range(-0.3f, 0.3f), Random.Range(-0.3f, 0.3f), 0).normalized;
+            directionAwayFromPlayer += new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), 0).normalized;
 
             // Define a nova posição a 1 unidade de distância na direção oposta
             Vector3 newPosition = transform.position + directionAwayFromPlayer;

@@ -84,8 +84,9 @@ public class EnemyMovement : MonoBehaviour
         }
 		if (collision.gameObject.CompareTag("Enemy"))
 		{
-			MoveAwayFromPlayer();
-		}
+      
+            MoveAwayFromPlayer();
+        }
 
     }
 
@@ -128,7 +129,7 @@ public class EnemyMovement : MonoBehaviour
 	public void TakeDamage(int damage) 
 	{ 
 		life-=damage;
-		if (life == 0)
+		if (life <= 0)
 		{
 			Die();
 		}
@@ -138,25 +139,25 @@ public class EnemyMovement : MonoBehaviour
 
 	public void Die()
 	{
+		agent.enabled = false;
 		Destroy(gameObject);
 	}
 
     public void MoveAwayFromPlayer()
     {
-        if (player != null)
-        {
+        
             // Calcula a direção oposta ao jogador
             Vector3 directionAwayFromPlayer = (transform.position - player.transform.position).normalized;
 
             // Adiciona um valor aleatório para a direção para não ser sempre na mesma direção
-            directionAwayFromPlayer += new Vector3(Random.Range(-0.3f, 0.3f), Random.Range(-0.3f, 0.3f), 0).normalized;
+            directionAwayFromPlayer += new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), 0).normalized;
 
             // Define a nova posição a 1 unidade de distância na direção oposta
             Vector3 newPosition = transform.position + directionAwayFromPlayer;
 
             // Move o agente para a nova posição
             agent.SetDestination(newPosition);
-        }
+        
     }
 
 
