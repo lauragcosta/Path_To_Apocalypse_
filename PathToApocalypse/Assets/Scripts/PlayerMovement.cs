@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
 	private Animator animator;
 	private Vector2 movement;
 	private Rigidbody2D rb;
-	public int health = 100;
+	// public int health = 100;
 
 	void Start()
 	{
@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 
-	public void TakeDamage(int damage)
+	/*public void TakeDamage(int damage)
 	{
 		health -= damage;
 		animator.SetTrigger("Hurt");
@@ -50,11 +50,11 @@ public class PlayerMovement : MonoBehaviour
 		{
 			Die();
 		}
-	}
-
+	}*/
+	/*
 	private void Die()
 	{
 		Debug.Log("Player has died.");
 		//MUDAR SCENE
-	}
+	}*/
 }
