@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 	public float moveSpeed = 1f;
-	public int damage = 20;
+	//public int damage = 20;
 	private Animator animator;
 	private Vector2 movement;
 	private Rigidbody2D rb;

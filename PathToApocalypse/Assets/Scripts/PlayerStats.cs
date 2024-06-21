@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +9,13 @@ public class PlayerStats : MonoBehaviour
     public Slider healthBar;
     public Slider thirstBar;
     public Slider hungerBar;
+    [SerializeField] private TextMeshPro objectivesText;
+    private List<GameObject> listOfNpcs = new List<GameObject>();
+    private Transform npcBox;
 
     private void Start()
     {
+        npcBox = transform.Find("Npcs");
         UpdateHealthBar();
         UpdateThirstBar();
         UpdateHungerBar();
@@ -17,6 +23,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+        FindAllNpcObjects(npcBox, listOfNpcs);
         UpdateHealthBar();
         UpdateThirstBar();
         UpdateHungerBar();
@@ -57,4 +64,23 @@ public class PlayerStats : MonoBehaviour
     {
         hungerBar.value = playerHealth.Hunger;
     }
+
+    // Recursive method to find all "NPC" objects
+    void FindAllNpcObjects(Transform parent, List<GameObject> list)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.CompareTag("NPC"))
+            {
+                list.Add(child.gameObject);
+            }
+            FindAllNpcObjects(child, list); // Recursive call
+        }
+    }
+    void UpdateObjectives()
+    {
+
+    }
+
+
 }
