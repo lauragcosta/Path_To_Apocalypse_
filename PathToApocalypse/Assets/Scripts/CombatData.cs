@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewCombatData", menuName = "Combat Data", order = 51)]
+[CreateAssetMenu(fileName = "NewCombatData", menuName = "Combat Data")]
 public class CombatData : ScriptableObject
 {
     [SerializeField] private Difficulty difficulty;
