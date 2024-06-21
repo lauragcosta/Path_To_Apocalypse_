@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 57964674099701926}
   - component: {fileID: 3251962966131952660}
   - component: {fileID: 7265302950700068974}
-  - component: {fileID: -6453626124423191798}
+  - component: {fileID: 4410122730694461852}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -186,8 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   damage: 20
-  health: 100
---- !u!114 &-6453626124423191798
+--- !u!114 &4410122730694461852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -199,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d01d3b88ed9134891419785c11c8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHealth: {fileID: 11400000, guid: 3bcc27edf46cf8a40a90424960c09e41, type: 2}
   healthBar: {fileID: 0}
   thirstBar: {fileID: 0}
   hungerBar: {fileID: 0}

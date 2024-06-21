@@ -3,71 +3,58 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
-	public Slider healthBar;
-	public Slider thirstBar;
-	public Slider hungerBar;
+    [SerializeField] private PlayerHealth playerHealth;
+    public Slider healthBar;
+    public Slider thirstBar;
+    public Slider hungerBar;
 
-	private float maxHealth = 100f;
-	private float currentHealth;
-	private float maxThirst = 100f;
-	private float currentThirst;
-	private float maxHunger = 100f;
-	private float currentHunger;
+    private void Start()
+    {
+        UpdateHealthBar();
+        UpdateThirstBar();
+        UpdateHungerBar();
+    }
 
-	void Start()
-	{
-		currentHealth = maxHealth;
-		currentThirst = maxThirst;
-		currentHunger = maxHunger;
+    private void Update()
+    {
+        UpdateHealthBar();
+        UpdateThirstBar();
+        UpdateHungerBar();
+    }
 
-		UpdateHealthBar();
-		UpdateThirstBar();
-		UpdateHungerBar();
-	}
+    public void TakeDamage(int damage)
+    {
+        playerHealth.Health -= damage;
+        if (playerHealth.Health < 0) playerHealth.Health = 0;
+        UpdateHealthBar();
+    }
 
-	void Update()
-	{
-		currentHunger -= Time.deltaTime;
-		currentThirst -= Time.deltaTime;
+    public void EatFood(int amount)
+    {
+        playerHealth.Hunger += amount;
+        if (playerHealth.Hunger > 10) playerHealth.Hunger = 10;
+        UpdateHungerBar();
+    }
 
-		UpdateHealthBar();
-		UpdateThirstBar();
-		UpdateHungerBar();
-	}
+    public void DrinkWater(int amount)
+    {
+        playerHealth.Thirst += amount;
+        if (playerHealth.Thirst > 10) playerHealth.Thirst = 10;
+        UpdateThirstBar();
+    }
 
-	public void TakeDamage(float amount)
-	{
-		currentHealth -= amount;
-		if (currentHealth < 0) currentHealth = 0;
-		UpdateHealthBar();
-	}
+    private void UpdateHealthBar()
+    {
+        healthBar.value = playerHealth.Health;
+    }
 
-	public void EatFood(float amount)
-	{
-		currentHunger += amount;
-		if (currentHunger > maxHunger) currentHunger = maxHunger;
-		UpdateHungerBar();
-	}
+    private void UpdateThirstBar()
+    {
+        thirstBar.value = playerHealth.Thirst;
+    }
 
-	public void DrinkWater(float amount)
-	{
-		currentThirst += amount;
-		if (currentThirst > maxThirst) currentThirst = maxThirst;
-		UpdateThirstBar();
-	}
-
-	void UpdateHealthBar()
-	{
-		healthBar.value = currentHealth / maxHealth;
-	}
-
-	void UpdateThirstBar()
-	{
-		thirstBar.value = currentThirst / maxThirst;
-	}
-
-	void UpdateHungerBar()
-	{
-		hungerBar.value = currentHunger / maxHunger;
-	}
+    private void UpdateHungerBar()
+    {
+        hungerBar.value = playerHealth.Hunger;
+    }
 }
