@@ -55,7 +55,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (combatData.IsWonCombat)
         {
-            switch (combatData.Difficulty)
+            switch (combatData.Difficulty.Value)
             {
                 case Difficulty.Easy:
                     EatFood(5);
