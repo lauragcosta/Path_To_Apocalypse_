@@ -8,7 +8,7 @@ public class CombatData : ScriptableObject
     [SerializeField] private Difficulty? difficulty;
     [SerializeField] private RewardType? rewardType;
     [SerializeField] private Need? rewardNeed; // Optional parameter for a need
-    [SerializeField] private GameObject rewardPrefab;  // Optional parameter for a prefab
+    [SerializeField] private string rewardWeapon;  // Optional parameter for a prefab
 
     public void ResetValues()
     {
@@ -16,8 +16,8 @@ public class CombatData : ScriptableObject
         isWonCombat = false;
         difficulty = null; 
         rewardType = null; 
-        rewardNeed = null; 
-        rewardPrefab = null; 
+        rewardNeed = null;
+        rewardWeapon = ""; 
     }
 
     public GameObject Npc { 
@@ -48,10 +48,10 @@ public class CombatData : ScriptableObject
         set { rewardNeed = value; }
     }
 
-    public GameObject RewardPrefab
+    public string RewardWeapon
     {
-        get { return rewardPrefab; }
-        set { rewardPrefab = value; }
+        get { return rewardWeapon; }
+        set { rewardWeapon = value; }
     }
 }
 

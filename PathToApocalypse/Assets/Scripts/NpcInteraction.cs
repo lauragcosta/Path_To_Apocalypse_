@@ -14,7 +14,7 @@ public class NpcInteraction : MonoBehaviour
     private Transform speechBubble;
     private Transform confirmation;
     [SerializeField] private CombatData combatData;
-
+    
     private void Start()
     {
         confirmation = transform.Find("Confirmation");
@@ -69,12 +69,12 @@ public class NpcInteraction : MonoBehaviour
                         case "John":
                             combatData.Difficulty = Difficulty.Medium;
                             combatData.RewardType = RewardType.Weapon;
-                            // Set your prefab here if needed, e.g., combatData.RewardPrefab = somePrefab;
+                            //combatData.RewardPrefab = somePrefab;
                             break;
                         case "Miguel":
                             combatData.Difficulty = Difficulty.Hard;
                             combatData.RewardType = RewardType.Weapon;
-                            // Set your prefab here if needed, e.g., combatData.RewardPrefab = somePrefab;
+                            combatData.RewardWeapon = "axe";
                             break;
                         case "Maria":
                             combatData.Difficulty = Difficulty.Easy;
