@@ -11,7 +11,6 @@ public class Inventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
         // Get all child GameObjects with the specified tag and add them to the list
         foreach (Transform child in transform)
         {
