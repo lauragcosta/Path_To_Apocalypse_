@@ -45,42 +45,49 @@ public class NpcInteraction : MonoBehaviour
                 // Move to the next text object
                 currentClicks = PassToNextText(currentClicks);
             }
+        }
 
-            // If all text objects have been shown, show the confirmation
-            if (currentClicks >= textObjects.Count)
+        ShowConfirmationWindow();
+    }
+
+    void ShowConfirmationWindow()
+    {
+        // If all text objects have been shown, show the confirmation
+        if (currentClicks >= textObjects.Count)
+        {
+            speechBubbleCanvas.gameObject.SetActive(false);
+            if (confirmation != null)
             {
-                speechBubbleCanvas.gameObject.SetActive(false);
-                if (confirmation != null)
+                confirmation.gameObject.SetActive(true);
+
+                if (Input.GetKeyDown(KeyCode.K))
                 {
-                    confirmation.gameObject.SetActive(true);
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    combatData.ResetValues();
+                    combatData.Npc = gameObject;
+                    switch (npcName.text)
                     {
-                        combatData.ResetValues();
-                        combatData.Npc = gameObject;
-                        if (npcName.Equals("John"))
-                        {
+                        case "John":
                             combatData.Difficulty = Difficulty.Medium;
                             combatData.RewardType = RewardType.Weapon;
-                           // combatData.RewardPrefab = 
-                        }
-                        if (npcName.Equals("Miguel"))
-                        {
+                            // Set your prefab here if needed, e.g., combatData.RewardPrefab = somePrefab;
+                            break;
+                        case "Miguel":
                             combatData.Difficulty = Difficulty.Hard;
                             combatData.RewardType = RewardType.Weapon;
-                            // combatData.RewardPrefab = 
-                        }
-                        if (npcName.Equals("Maria"))
-                        {
+                            // Set your prefab here if needed, e.g., combatData.RewardPrefab = somePrefab;
+                            break;
+                        case "Maria":
                             combatData.Difficulty = Difficulty.Easy;
                             combatData.RewardType = RewardType.Need;
                             combatData.RewardNeed = Need.Hunger;
-                        }
-                        SceneManager.LoadScene("Level1ApartmentFight");
+                            break;
                     }
+                    SceneManager.LoadScene("Level1ApartmentFight");
                 }
             }
         }
     }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
