@@ -1,42 +1,71 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using TMPro;
+using UnityEditor;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
-	public Image icon;
-	public Button button;
+    private Item[] allItems;
+    private bool isSelected;
+    private bool isEmpty = true;
+    private Item itemInSlot;
+    [SerializeField] private CombatData combatData;
+    private Image slotImage;
 
-	Item item;
 
-	public void AddItem(Item newItem)
-	{
-		item = newItem;
+    void Start()
+    {
+        slotImage = gameObject.GetComponentInChildren<Image>();
+        allItems = Resources.LoadAll<Item>("Items");
+    }
 
-		icon.sprite = item.icon;
-		icon.enabled = true;
-		button.interactable = true;
+    public bool IsSelected() { return isSelected; }
 
-		button.onClick.AddListener(OnSelectItem);
-	}
+    public void AddItemToSlot(string name)
+    { 
+        // Check if the slot is empty
+        if (isEmpty)
+        {
+            isEmpty = true;
+            foreach (Item i in allItems)
+            {
+                if (i.ItemName.Equals(name))
+                {
+                    slotImage.sprite = i.Icon; // Assign the sprite to the Image component
+                    itemInSlot = i;
+                    isEmpty = false;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            isEmpty = false;
+            Debug.LogWarning("Slot is not empty.");
+        }
+    }
 
-	public void ClearSlot()
-	{
-		item = null;
 
-		icon.sprite = null;
-		icon.enabled = false;
-		button.interactable = false;
+    public Item GetItemInSlot()
+    {
+        return itemInSlot;
+    }
 
-		button.onClick.RemoveListener(OnSelectItem);
-	}
+    public bool IsEmpty()
+    {
+        return isEmpty;
+    }
 
-	public void OnSelectItem()
-	{
-		button.GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f, 1f);
-	}
+    public void OnButtonClick()
+    {
+        combatData.WeaponInHand = null;
+        isSelected = true;
+        Debug.Log("Selected: " + (itemInSlot != null ? itemInSlot.ItemName : "No item selected"));
+        combatData.WeaponInHand = itemInSlot != null ? itemInSlot.ItemPrefab : null;
+    }
 
-	public void OnDeselectItem()
-	{
-		button.GetComponent<Image>().color = Color.white;
-	}
 }

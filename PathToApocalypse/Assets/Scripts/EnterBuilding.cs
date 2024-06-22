@@ -5,70 +5,76 @@ public class EnterBuilding : MonoBehaviour
 {
     private Transform confirmation;
     [SerializeField] private CombatData combatData;
+    private bool isCharacterInside = false;
 
     void Start()
     {
         confirmation = transform.Find("confirmation");
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void Update()
     {
-        if (other.CompareTag("Player"))
+        // Check if the player presses 'K' to confirm entering the building
+        if (Input.GetKeyDown(KeyCode.K) && isCharacterInside)
         {
-            // Activate the confirmation object when the player enters the building trigger
-            if (confirmation != null)
+            // Set combat data based on the building's tag
+            if (gameObject.CompareTag("Hospital"))
             {
-                confirmation.gameObject.SetActive(true);
+                combatData.ResetValues();
+                combatData.Difficulty = Difficulty.Hard;
+                combatData.RewardType = RewardType.Need;
+                combatData.RewardNeed = Need.Health;
+            }
+            else if (gameObject.CompareTag("Bar"))
+            {
+                combatData.ResetValues();
+                combatData.Difficulty = Difficulty.Easy;
+                combatData.RewardType = RewardType.Need;
+                combatData.RewardNeed = Need.Thirst;
+            }
+            else if (gameObject.CompareTag("SuperMarket"))
+            {
+                combatData.ResetValues();
+                combatData.Difficulty = Difficulty.Easy;
+                combatData.RewardType = RewardType.Need;
+                combatData.RewardNeed = Need.Hunger;
+            }
+            else if (gameObject.CompareTag("Prison"))
+            {
+                combatData.ResetValues();
+                combatData.Difficulty = Difficulty.Hard;
+                combatData.RewardType = RewardType.Weapon;
+                combatData.RewardWeapon = null;
+            }
 
-                // Check if the player presses 'K' to confirm entering the building
-                if (Input.GetKeyDown(KeyCode.K))
+            // Load the combat scene after setting combat data
+            SceneManager.LoadScene("Level1ApartmentFight");
+        }
+    }
+
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                isCharacterInside = true;
+                // Activate the confirmation object when the player enters the building trigger
+                if (confirmation != null)
                 {
-                    // Set combat data based on the building's tag
-                    if (gameObject.CompareTag("Hospital"))
-                    {
-                        combatData.ResetValues();
-                        combatData.Difficulty = Difficulty.Hard;
-                        combatData.RewardType = RewardType.Need;
-                        combatData.RewardNeed = Need.Health;
-                    }
-                    else if (gameObject.CompareTag("Bar"))
-                    {
-                        combatData.ResetValues();
-                        combatData.Difficulty = Difficulty.Easy;
-                        combatData.RewardType = RewardType.Need;
-                        combatData.RewardNeed = Need.Thirst;
-                    }
-                    else if (gameObject.CompareTag("SuperMarket"))
-                    {
-                        combatData.ResetValues();
-                        combatData.Difficulty = Difficulty.Easy;
-                        combatData.RewardType = RewardType.Need;
-                        combatData.RewardNeed = Need.Hunger;
-                    }
-                    else if (gameObject.CompareTag("Prison"))
-                    {
-                        combatData.ResetValues();
-                        combatData.Difficulty = Difficulty.Hard;
-                        combatData.RewardType = RewardType.Weapon;
-                        combatData.RewardWeapon = "sword";
-                    }
-
-                    // Load the combat scene after setting combat data
-                    SceneManager.LoadScene("Level1ApartmentFight");
+                    confirmation.gameObject.SetActive(true);
                 }
             }
         }
-    }
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        // Disable the confirmation object when the player exits the building trigger
-        if (other.CompareTag("Player"))
+        void OnTriggerExit2D(Collider2D other)
         {
-            if (confirmation != null)
+            // Disable the confirmation object when the player exits the building trigger
+            if (other.CompareTag("Player"))
             {
-                confirmation.gameObject.SetActive(false);
+                isCharacterInside = false;
+                if (confirmation != null)
+                {
+                    confirmation.gameObject.SetActive(false);
+                }
             }
         }
-    }
 }

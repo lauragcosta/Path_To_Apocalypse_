@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyMovement : MonoBehaviour
 {
 	[SerializeField] private EnemyData enemyData;
 
-    private int life;
+    public int life;
     private int damage;
     private GameObject player;
     private NavMeshAgent agent;
     private Animator animator;
-	private float maxDistance = 3f;
-	//private bool isMoving = false;
-	//private bool isAttacking = false;  // Flag to indicate if the enemy is attacking
+
 
     private bool takeDamage = false;
     private GameObject mainCamera;
@@ -27,6 +26,7 @@ public class EnemyMovement : MonoBehaviour
 		damage = enemyData.Damage;
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 
+    
     }
 
 	void Update()
@@ -61,7 +61,7 @@ public class EnemyMovement : MonoBehaviour
             if (player != null)
             {
                 PlayerControllerTurn playerScript = player.GetComponent<PlayerControllerTurn>();
-				Level1ApartmentFight mainCameraScript = mainCamera.GetComponent<Level1ApartmentFight>();
+				FightsScript mainCameraScript = mainCamera.GetComponent<FightsScript>();
 				bool isEnemyTurn = mainCameraScript.EnemyTurn();
                 // Verifica se é o turno do jogador e se o dano ainda não foi aplicado
                 if (!takeDamage && isEnemyTurn)
@@ -77,7 +77,7 @@ public class EnemyMovement : MonoBehaviour
 				}
             }
         }
-        if (collision.gameObject.layer.Equals("Wall"))
+        if (collision.gameObject.CompareTag("Wall"))
         {
 
             MoveAwayFromPlayer();
@@ -110,7 +110,7 @@ public class EnemyMovement : MonoBehaviour
             float distanceToPlayer = direction.magnitude;
 
             
-                float randomScale = Random.Range(1.2f, maxDistance);
+                float randomScale = Random.Range(enemyData.MinDistance, enemyData.MaxDistance);
                 // Calcula o ponto dentro da distância máxima ao longo da direção até o jogador
                 Vector3 targetPosition = transform.position + direction.normalized * randomScale;
 
@@ -137,7 +137,7 @@ public class EnemyMovement : MonoBehaviour
 		animator.SetTrigger("Hurt");
 	}
 
-	public void Die()
+	private void Die()
 	{
 		agent.enabled = false;
 		Destroy(gameObject);
@@ -155,110 +155,17 @@ public class EnemyMovement : MonoBehaviour
             // Define a nova posição a 1 unidade de distância na direção oposta
             Vector3 newPosition = transform.position + directionAwayFromPlayer;
 
+        if (newPosition != null)
+        {
             // Move o agente para a nova posição
             agent.SetDestination(newPosition);
-        
+        }
     }
 
-
-    /*
-	IEnumerator WanderRoutine()
+	public int GetLife()
 	{
-		while (true)
-		{
-			if (!isAttacking) // Only wander if not attacking
-			{
-				if (Random.Range(0, 2) == 0)
-				{
-					// Idle
-					isMoving = false;
-					movement = Vector2.zero;
-					yield return new WaitForSeconds(Random.Range(1f, 3f));
-				}
-				else
-				{
-					// Move
-					isMoving = true;
-					movement = GetRandomDirection();
-					yield return new WaitForSeconds(Random.Range(2f, 4f));
-				}
-			}
-			yield return null; // Ensure the loop continues
-		}
+		return life;
 	}
 
-	void FixedUpdate()
-	{
-		if (isMoving && !isAttacking) // Only move if not attacking
-		{
-			rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-		}
-		else if (isAttacking)
-		{
-			rb.velocity = Vector2.zero; // Ensure velocity is zero during attack
-		}
-	}
 
-	Vector2 GetRandomDirection()
-	{
-		int direction = Random.Range(0, 4);
-		switch (direction)
-		{
-			case 0: return Vector2.up;
-			case 1: return Vector2.down;
-			case 2: return Vector2.left;
-			case 3: return Vector2.right;
-		}
-		return Vector2.zero;
-	}
-
-	void OnCollisionEnter2D(Collision2D collision)
-	{
-		if (collision.gameObject.CompareTag("Wall"))
-		{
-			// Change direction upon collision
-			movement = GetRandomDirection();
-		}
-
-		if (collision.gameObject.CompareTag("Player"))
-		{
-			if (!isAttacking) // Only attack if not already attacking
-			{
-				StartCoroutine(AttackPlayer(collision.gameObject));
-			}
-		}
-	}
-
-	IEnumerator AttackPlayer(GameObject player)
-	{
-		isAttacking = true;
-		isMoving = false; // Stop moving
-		rb.velocity = Vector2.zero; // Stop any momentum
-
-		// Trigger attack animation
-		animator.SetTrigger("Attack");
-
-		// Wait for the duration of the attack animation (adjust time as needed)
-		yield return new WaitForSeconds(0.5f);
-
-		// Deal damage to the player
-		PlayerMovement playerController = player.GetComponent<PlayerMovement>();
-		if (playerController != null)
-		{
-			playerController.TakeDamage(damage);
-		}
-
-		// Wait for a short delay before resuming movement (if needed)
-		yield return new WaitForSeconds(0.5f);
-
-		isAttacking = false;
-	}
-
-	// Example method to be called when the enemy takes damage
-	public void TakeDamage(int damage)
-	{
-		animator.SetTrigger("Hurt");
-		// Handle enemy health reduction and potential death here
-	}
-	*/
 }

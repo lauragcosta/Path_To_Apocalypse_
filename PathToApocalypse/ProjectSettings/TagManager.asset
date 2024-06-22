@@ -12,6 +12,9 @@ TagManager:
   - Bar
   - SuperMarket
   - Prison
+  - UI
+  - InventorySlot
+  - ItemImage
   layers:
   - Default
   - TransparentFX
@@ -54,4 +57,7 @@ TagManager:
     locked: 0
   - name: JohnFight
     uniqueID: 887453883
+    locked: 0
+  - name: prision
+    uniqueID: 3447021605
     locked: 0

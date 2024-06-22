@@ -5,17 +5,17 @@ using UnityEngine;
 public class PlayerHealth : ScriptableObject
 {
 
-    [SerializeField] private int hunger;
-    [SerializeField] private int thirst;
+    [SerializeField] private float hunger;
+    [SerializeField] private float thirst;
     [SerializeField] private int health;
  
-    public int Hunger
+    public float Hunger
     {
         get { return hunger; }
         set { hunger = value; }
     }
 
-    public int Thirst
+    public float Thirst
     {
         get { return thirst; }
         set { thirst = value; }

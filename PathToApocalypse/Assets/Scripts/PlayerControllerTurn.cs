@@ -6,11 +6,13 @@ using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
 public class PlayerControllerTurn : MonoBehaviour
 {
     [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private CombatData combatData;
     [SerializeField] private GameObject mainCamera;
-    [SerializeField] private GameObject weapon;
+   
     [SerializeField] private Vector3 offset;
     [SerializeField] private TextMeshProUGUI probabilityText; // Para TextMeshPro
     [SerializeField] private Button attack1;
@@ -24,14 +26,21 @@ public class PlayerControllerTurn : MonoBehaviour
     private bool playerTurn = true;
     private bool playerTurnRoutine;
     private GameObject instantiatedWeapon;
-    [SerializeField]private int life;
+    private int life;
+    private float thirst;
+    private float hunger;
     private bool takeDamage = false;
-    private int damage = 15;
-    private int damageOne = 25;
-    private int damageTwo = 35;
+    private int noWeaponDamage = 5;
+    bool UIActive = false;
+    private GameObject weapon = null;
+    private EnemyMovement enemyScript;
+  
 
-	private Inventory inventory;
+    private int damage;
+    private int damageOne;
+    private int damageTwo;
 
+    private Vector3 enemyPosition;
 
 	// Start is called before the first frame update
 	void Start()
@@ -40,163 +49,319 @@ public class PlayerControllerTurn : MonoBehaviour
         animator = GetComponent<Animator>();
 
         agent.agentTypeID = NavMesh.GetSettingsByIndex(0).agentTypeID;
-        if(weapon != null)
+
+        weapon = combatData.WeaponInHand;
+
+
+        if (weapon!=null)
         {
-           
+
             Vector3 newPosition = gameObject.transform.position + offset;
-            instantiatedWeapon = Instantiate(weapon,newPosition,Quaternion.identity);
+            instantiatedWeapon = Instantiate(weapon, newPosition, Quaternion.identity);
             instantiatedWeapon.transform.SetParent(gameObject.transform);
 
         }
         playerTurnRoutine = true;
         life = playerHealth.Health;
+        thirst = playerHealth.Thirst;
+        hunger = playerHealth.Hunger;
 
-        probabilityText.gameObject.SetActive(false);
-        attack1.gameObject.SetActive(false);
-        attack2.gameObject.SetActive(false);
-        attack3.gameObject.SetActive(false);
+        HideUI();
+
         TextMeshProUGUI attackText = attack1.GetComponentInChildren<TextMeshProUGUI>();
         TextMeshProUGUI attack1Text = attack2.GetComponentInChildren<TextMeshProUGUI>();
         TextMeshProUGUI attack2Text = attack3.GetComponentInChildren<TextMeshProUGUI>();
+        if(weapon != null)
+        {
+            attackText.text = "Attack 1(" + damage + "Damage)";
+            attack1Text.text = "Attack 2(" + damageOne + "Damage)";
+            attack2Text.text = "Attack 3(" + damageTwo + "Damage)";
+        } else
+        {
+            attackText.text = "Attack 1(" + noWeaponDamage + "Damage)";
+            attack1Text.text = "Attack 2(" + noWeaponDamage + "Damage)";
+            attack2Text.text = "Attack 3(" + noWeaponDamage + "Damage)";
+        }
 
-        attackText.text = "Attack 1(" + damage + "Damage)";
-        attack1Text.text = "Attack 2(" + damageOne + "Damage)";
-        attack2Text.text = "Attack 3(" + damageTwo + "Damage)";
+     
     }
 
     void Update()
     {
-        playerTurn = mainCamera.GetComponent<Level1ApartmentFight>().PlayerTurn();
-        if (playerTurn) {
-            // Verifica se houve clique com o botão esquerdo do mouse para mover o personagem
-            if (!IsPointerOverUIObject())
+        playerTurn = mainCamera.GetComponent<FightsScript>().PlayerTurn();
+        if (playerTurn)
+        {
+   
+            // Verifica se houve clique com o botï¿½o esquerdo do mouse para mover o personagem
+            if (Input.GetMouseButtonDown(0) && !UIActive)
             {
-                if (Input.GetMouseButtonDown(0))
-                {
                     Vector2 raycastPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     RaycastHit2D hit = Physics2D.Raycast(raycastPoint, Vector2.zero);
 
-                    
-
-                    if (hit.collider != null) // Verifica se o Raycast colidiu com algum objeto
+                    if (hit.collider != null)
                     {
-                        if (hit.collider.CompareTag("Enemy")) // Verifica se o objeto colidido tem a tag "Enemy"
+                        if (hit.collider.CompareTag("Enemy"))
                         {
-                               
-                            // Coloque aqui a lógica que você deseja executar ao clicar em um inimigo
-                            EnemyMovement enemyScript = hit.collider.GetComponent<EnemyMovement>();
-                            Vector3 enemyPosition = hit.collider.transform.position;
-                            float distance = Vector3.Distance(agent.transform.position, hit.collider.transform.position);
-                            if (distance <= 5f)
-                            {
-                                probabilityText.gameObject.SetActive(true);
-                                attack1.gameObject.SetActive(true);
-                                attack2.gameObject.SetActive(true);
-                                attack3.gameObject.SetActive(true);
+                           
+                            enemyScript = hit.collider.GetComponent<EnemyMovement>();
+                             enemyPosition = hit.collider.transform.position;
+                            float distance = Vector3.Distance(agent.transform.position, enemyPosition);
 
-
-
-                                attack1.onClick.AddListener(() => MovePlayerWithAttack(enemyPosition));
-                                attack2.onClick.AddListener(() => MovePlayerWithAttack1(enemyPosition));
-                                attack3.onClick.AddListener(() => MovePlayerWithAttack2(enemyPosition));
-
-                            }
-                            else
-                            {
-                                probabilityText.gameObject.SetActive(false);
-                                attack1.gameObject.SetActive(false);
-                                attack2.gameObject.SetActive(false);
-                                attack3.gameObject.SetActive(false);
-                                MovePlayer();
-                            }
+                        if (distance <= 5f && weapon != null)
+                        {
+                            ShowUI(enemyPosition);
+                            UIActive = true;
                         }
-
+                        else if(weapon==null){
+                            ShowUIWithoutWeapon(enemyPosition);
+                            UIActive = true;
+                        }
+                        }
                     }
                     else
                     {
-                        probabilityText.gameObject.SetActive(false);
-                        attack1.gameObject.SetActive(false);
-                        attack2.gameObject.SetActive(false);
-                        attack3.gameObject.SetActive(false);
+                        HideUI();
                         MovePlayer();
                     }
-                }
             }
+            else if(UIActive)
+            {
+                if(weapon != null) {
+                    attack1.onClick.RemoveAllListeners();
+                    attack1.onClick.AddListener(() => MovePlayerWithAttack(enemyPosition));
+                    attack2.onClick.RemoveAllListeners();
+                    attack2.onClick.AddListener(() => MovePlayerWithAttack1(enemyPosition));
+                    attack3.onClick.RemoveAllListeners();
+                    attack3.onClick.AddListener(() => MovePlayerWithAttack2(enemyPosition));
+                }
+                else if(weapon == null)
+                {
+                    attack1.onClick.RemoveAllListeners();
+                    attack1.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+                    attack2.onClick.RemoveAllListeners();
+                    attack2.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+                    attack3.onClick.RemoveAllListeners();
+                    attack3.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+                }
+
+            }
+        }
+
+        UpdateMovementAnimation();
+
+        if (hunger < 7f && thirst < 7f)
+        {
+            attack3.gameObject.SetActive(false);
+        }
+        else if (hunger < 4f && hunger < 4f)
+        {
+            attack2.gameObject.SetActive(false);
+            attack3.gameObject.SetActive(false);
+        }
+
+        if(weapon != null)
+        {
+            GetDamages();
+        }
     }
 
-        // Obtém o vetor de movimento do NavMeshAgent
-        Vector3 navMeshVelocity = agent.velocity;
+    private void GetDamages()
+    {
 
-        // Converte a velocidade do NavMeshAgent para um vetor 2D
-        Vector2 movement = new Vector2(navMeshVelocity.x, navMeshVelocity.y);
+        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
+       
+        damage = instantiatedWeaponScript.GetDamage();
+        damageOne = instantiatedWeaponScript.GetDamageOne();
+        damageTwo = instantiatedWeaponScript.GetDamageTwo();
+    }
 
+    private int GetProbability(Vector3 position)
+    {
+        int probability = 100;
+        int walls = IsWallInRadius();
+        probability -= walls * 20;
 
-        if (movement.magnitude > 0.1f) // Se estiver se movendo
+        float distance = Vector3.Distance(transform.position, position);
+        probability -= (int)distance * 10;
+
+        if (thirst < 7f && hunger < 7f)
         {
-            if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y)) // Movimento predominante na horizontal
-            {
-                if (movement.x > 0.1f)
-                {
-                    instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 180f, 0f); // Virar a arma para a direita
-                    offset.x = 0.4f;
-                    offset.y = 0f;
-                }
-                else if (movement.x < -0.1f)
-                {
-                    instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 0f, 0f); // Virar a arma para a esquerda
-                    offset.x = -0.4f;
-                    offset.y = 0f;
-                }
-            }
-            else // Movimento predominante na vertical
-            {
-                if (movement.y > 0.1f)
-                {
-                    instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 180f, 0f); // Arma normal para cima
-                    offset.y = 0.2f; // Colocar a arma mais alta
-                    offset.x = 0f;
-                }
-                else if (movement.y < -0.1f)
-                {
-                    instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 0f, 180f); // Virar a arma para baixo
-                    offset.y = -0.4f; // Colocar a arma mais baixa
-                    offset.x = 0f;
-                }
-            }
-
-            Vector3 newPosition = gameObject.transform.position + offset;
-            instantiatedWeapon.transform.position = newPosition;
+            probability -= 10;
         }
-        // Atualiza as animações no Animator
+        else if (thirst < 4f && hunger < 4f)
+        {
+            probability -= 20;
+        }
+
+
+        return probability;
+    }
+
+    int IsWallInRadius()
+    {
+        int walls = 0;
+        // Define o ponto central da esfera como a posiï¿½ï¿½o atual do GameObject
+        Vector3 center = transform.position;
+
+        // Obtem todos os colliders dentro do raio especificado
+        Collider[] hitColliders = Physics.OverlapSphere(center, maxMoveDistance);
+
+        // Itera por todos os colliders encontrados
+        foreach (Collider hitCollider in hitColliders)
+        {
+            // Verifica se o colisor tem a tag "wall"
+            if (hitCollider.CompareTag("Wall"))
+            {
+                // Se encontrar, retorna true
+                return walls++;
+            }
+        }
+
+        // Se nenhum collider com a tag "wall" for encontrado, retorna false
+        return walls;
+    }
+    private void ShowUI(Vector3 enemyPosition)
+    {
+        probabilityText.gameObject.SetActive(true);
+
+        attack1.gameObject.SetActive(true);
+        attack2.gameObject.SetActive(true);
+        attack3.gameObject.SetActive(true);
+        
+        
+        probabilityText.text = "Probability:" + GetProbability(enemyPosition);
+
+        // Remove todos os listeners anteriores e adiciona novos
+        attack1.onClick.RemoveAllListeners();
+        attack1.onClick.AddListener(() => MovePlayerWithAttack(enemyPosition));
+        attack2.onClick.RemoveAllListeners();
+        attack2.onClick.AddListener(() => MovePlayerWithAttack1(enemyPosition));
+        attack3.onClick.RemoveAllListeners();
+        attack3.onClick.AddListener(() => MovePlayerWithAttack2(enemyPosition));
+    }
+
+    private void ShowUIWithoutWeapon(Vector3 enemyPosition)
+    {
+        probabilityText.gameObject.SetActive(true);
+
+        attack1.gameObject.SetActive(true);
+        attack2.gameObject.SetActive(true);
+        attack3.gameObject.SetActive(true);
+
+
+        probabilityText.text = "Probability:" + GetProbability(enemyPosition);
+
+        // Remove todos os listeners anteriores e adiciona novos
+        attack1.onClick.RemoveAllListeners();
+        attack1.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+        attack2.onClick.RemoveAllListeners();
+        attack2.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+        attack3.onClick.RemoveAllListeners();
+        attack3.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+    }
+
+    private void HideUI()
+    {
+        probabilityText.gameObject.SetActive(false);
+        attack1.gameObject.SetActive(false);
+        attack2.gameObject.SetActive(false);
+        attack3.gameObject.SetActive(false);
+    }
+
+
+
+    private void UpdateMovementAnimation()
+    {
+        Vector3 navMeshVelocity = agent.velocity;
+        Vector2 movement = new Vector2(navMeshVelocity.x, navMeshVelocity.y);
+        if (weapon != null)
+        {
+
+            if (movement.magnitude > 0.1f)
+            {
+                if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
+                {
+                    if (movement.x > 0.1f)
+                    {
+                        instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                        offset.x = 0.4f;
+                        offset.y = 0f;
+                    }
+                    else if (movement.x < -0.1f)
+                    {
+                        instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                        offset.x = -0.4f;
+                        offset.y = 0f;
+                    }
+                }
+                else
+                {
+                    if (movement.y > 0.1f)
+                    {
+                        instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                        offset.y = 0.2f;
+                        offset.x = 0f;
+                    }
+                    else if (movement.y < -0.1f)
+                    {
+                        instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
+                        offset.y = -0.4f;
+                        offset.x = 0f;
+                    }
+                }
+
+                Vector3 newPosition = gameObject.transform.position + offset;
+                instantiatedWeapon.transform.position = newPosition;
+            }
+        }
+
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
-        animator.SetBool("IsMoving", movement.magnitude > 0.1f); // Considera que o personagem está se movendo se a magnitude do vetor de movimento for maior que 0.1
+        animator.SetBool("IsMoving", movement.magnitude > 0.1f);
 
-        // Normaliza o vetor de movimento para garantir que as animações intermediárias sejam suaves
         if (movement.magnitude > 1f)
         {
             movement.Normalize();
         }
     }
 
-    private bool IsPointerOverUIObject()
+    private void MovePlayerWithoutWeapon(Vector3 targetPosition)
     {
-        // Verifica se o clique foi em um objeto da UI (se necessário)
-        if (EventSystem.current.IsPointerOverGameObject())
+        HideUI();
+        thirst -= 0.1f;
+        hunger -= 0.1f;
+        if (thirst <= 0 || hunger <= 0)
         {
-            return true;
+            GameOver();
         }
-        return false;
+
+        UIActive = false;
+
+        Invoke("DelayEnemyHit", 1f);
+        Invoke("DelayPlayerMoved", 1f);
+        Invoke("MovePlayerAway", 2f);
+        agent.SetDestination(targetPosition);
+        PlayerTurnRoutine();
+    }
+
+    private void DelayEnemyHit()
+    {
+        enemyScript.TakeDamage(noWeaponDamage);
     }
 
     private void MovePlayerWithAttack(Vector3 targetPosition)
     {
-        probabilityText.gameObject.SetActive(false);
-        attack1.gameObject.SetActive(false);
-        attack2.gameObject.SetActive(false);
-        attack3.gameObject.SetActive(false);
-        SwordScript swordScript = weapon.GetComponent<SwordScript>();
-        swordScript.SetDamage(damage);
+        HideUI();
+        thirst -= 0.1f;
+        hunger -= 0.1f;
+        if (thirst <= 0 || hunger <= 0)
+        {
+            GameOver();
+        }
+
+        UIActive = false;
+        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
+        instantiatedWeaponScript.SetAttackDamage(damage);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -204,12 +369,17 @@ public class PlayerControllerTurn : MonoBehaviour
 
     private void MovePlayerWithAttack1(Vector3 targetPosition)
     {
-        probabilityText.gameObject.SetActive(false);
-        attack1.gameObject.SetActive(false);
-        attack2.gameObject.SetActive(false);
-        attack3.gameObject.SetActive(false);
-        SwordScript swordScript = weapon.GetComponent<SwordScript>();
-        swordScript.SetDamage(damageOne);
+        HideUI();
+        UIActive = false;
+        thirst -= 0.15f;
+        hunger -= 0.15f;
+        if (thirst <= 0 || hunger <= 0)
+        {
+            GameOver();
+        }
+
+        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
+        instantiatedWeaponScript.SetAttackDamage(damage);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -217,12 +387,18 @@ public class PlayerControllerTurn : MonoBehaviour
 
     private void MovePlayerWithAttack2(Vector3 targetPosition)
     {
-        probabilityText.gameObject.SetActive(false);
-        attack1.gameObject.SetActive(false);
-        attack2.gameObject.SetActive(false);
-        attack3.gameObject.SetActive(false);
-        SwordScript swordScript = weapon.GetComponent<SwordScript>();
-        swordScript.SetDamage(damageTwo);
+        HideUI();
+        UIActive = false;
+        thirst -= 0.2f;
+        hunger -= 0.2f;
+
+        if (thirst <= 0 || hunger <= 0)
+        {
+            GameOver();
+        }
+
+        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
+        instantiatedWeaponScript.SetAttackDamage(damage);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -230,20 +406,27 @@ public class PlayerControllerTurn : MonoBehaviour
 
     private void MovePlayer()
     {
+        thirst -= 0.1f;
+        hunger -= 0.1f;
         Vector2 raycastPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Vector3 direction = raycastPoint - (Vector2)transform.position;
 
-        // Verifica se a distância até o ponto clicado é maior que a distância máxima permitida
+        // Verifica se a distï¿½ncia atï¿½ o ponto clicado ï¿½ maior que a distï¿½ncia mï¿½xima permitida
         if (direction.magnitude > maxMoveDistance)
         {
-            // Calcula o ponto dentro da distância máxima ao longo da direção até o ponto clicado
+            // Calcula o ponto dentro da distï¿½ncia mï¿½xima ao longo da direï¿½ï¿½o atï¿½ o ponto clicado
             targetPosition = transform.position + direction.normalized * maxMoveDistance;
         }
         else
         {
-            // Define o destino do NavMeshAgent para o ponto clicado diretamente se estiver dentro da distância máxima
+            // Define o destino do NavMeshAgent para o ponto clicado diretamente se estiver dentro da distï¿½ncia mï¿½xima
             targetPosition = raycastPoint;
+        }
+
+        if (thirst <= 0 || hunger <=0)
+        {
+            GameOver();
         }
 
         Invoke("DelayPlayerMoved", 1f);
@@ -254,7 +437,7 @@ public class PlayerControllerTurn : MonoBehaviour
 
     private void DelayPlayerMoved()
     {
-        Level1ApartmentFight level1ApartmentScript = mainCamera.GetComponent<Level1ApartmentFight>();
+        FightsScript level1ApartmentScript = mainCamera.GetComponent<FightsScript>();
         level1ApartmentScript.PlayerMoved();
     }
 
@@ -285,7 +468,7 @@ public class PlayerControllerTurn : MonoBehaviour
     {
 
         life -= damage;
-        if (life == 0)
+        if (life <= 0)
         {
             GameOver();
         }
@@ -297,17 +480,18 @@ public class PlayerControllerTurn : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Verifica se o jogador não é nulo antes de acessar o componente PlayerControllerTurn
+            // Verifica se o jogador nï¿½o ï¿½ nulo antes de acessar o componente PlayerControllerTurn
             if (weapon== null)
             {
-                EnemyMovement enemyScript = GetComponent<EnemyMovement>();
+                 GameObject enemy = collision.gameObject;
+                 enemyScript = enemy.GetComponent<EnemyMovement>();
               
-                // Verifica se é o turno do jogador e se o dano ainda não foi aplicado
+                // Verifica se ï¿½ o turno do jogador e se o dano ainda nï¿½o foi aplicado
                 if (!takeDamage && playerTurnRoutine)
                 {
-                    enemyScript.TakeDamage(damage);
+                    enemyScript.TakeDamage(noWeaponDamage);
                     takeDamage = true;
-                    Attack(); // Método para realizar a ação de ataque após aplicar o dano
+                    Attack(); // Mï¿½todo para realizar a aï¿½ï¿½o de ataque apï¿½s aplicar o dano
                     Invoke("SetTakeDamage", 4f);
                 }
             } else { MovePlayerAway(); }
@@ -325,29 +509,38 @@ public class PlayerControllerTurn : MonoBehaviour
 
     public void GameOver()
     {
-
+        Time.timeScale = 0;
     }
 
     public void MovePlayerAway()
     {
        
-            // Calcula a direção oposta ao jogador
+            // Calcula a direï¿½ï¿½o oposta ao jogador
             Vector3 directionAwayFromPlayer = transform.position.normalized;
 
-            // Adiciona um valor aleatório para a direção para não ser sempre na mesma direção
+            // Adiciona um valor aleatï¿½rio para a direï¿½ï¿½o para nï¿½o ser sempre na mesma direï¿½ï¿½o
             directionAwayFromPlayer += new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), 0).normalized;
 
-            // Define a nova posição a 1 unidade de distância na direção oposta
+            // Define a nova posiï¿½ï¿½o a 1 unidade de distï¿½ncia na direï¿½ï¿½o oposta
             Vector3 newPosition = transform.position + directionAwayFromPlayer;
 
-            // Move o agente para a nova posição
+            // Move o agente para a nova posiï¿½ï¿½o
             agent.SetDestination(newPosition);
         
     }
 
-	void ReceiveItem(Item item)
-	{
-		inventory.Add(item);
-	}
+    public int GetLife()
+    {
+        return life;
+    }
 
+    public float GetThirst()
+    {
+        return thirst;
+    }
+
+    public float GetHunger()
+    {
+        return hunger;
+    }
 }
