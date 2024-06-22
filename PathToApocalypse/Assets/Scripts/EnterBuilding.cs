@@ -44,7 +44,7 @@ public class EnterBuilding : MonoBehaviour
                 combatData.ResetValues();
                 combatData.Difficulty = Difficulty.Hard;
                 combatData.RewardType = RewardType.Weapon;
-                combatData.RewardWeapon = "sword";
+                combatData.RewardWeapon = null;
             }
 
             // Load the combat scene after setting combat data
