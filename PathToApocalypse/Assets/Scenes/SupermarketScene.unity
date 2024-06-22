@@ -231,7 +231,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2741212001966949399, guid: 93d434f5ca4860f41b1d7656de80060e, type: 3}
+  enemyPrefab3: {fileID: 2741212001966949399, guid: 19e1cc53b5b78ce47832b109ca08548d, type: 3}
+  enemyPrefab1: {fileID: 2741212001966949399, guid: 93d434f5ca4860f41b1d7656de80060e, type: 3}
+  enemyPrefab2: {fileID: 2741212001966949399, guid: 07bc7f6ce74a4714e985cd21f5793adf, type: 3}
   player: {fileID: 1862870258}
+  combatData: {fileID: 11400000, guid: ac24869cecb22a745a42119572e27732, type: 2}
 --- !u!114 &1019694782
 MonoBehaviour:
   m_ObjectHideFlags: 0

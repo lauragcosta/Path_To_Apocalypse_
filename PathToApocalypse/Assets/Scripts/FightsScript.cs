@@ -3,24 +3,64 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using Unity.VisualScripting;
 
 
 public class FightsScript : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject enemyPrefab3;
+    [SerializeField] private GameObject enemyPrefab1;
+    [SerializeField] private GameObject enemyPrefab2;
     [SerializeField] private GameObject player;
+    [SerializeField] private CombatData combatData;
     private bool enemyTurn = false;
     private bool playerTurn = true;
     private bool hasMoved = false;
 
+
     void Start()
     {
-        int randomValue = Random.Range(3, 9);
+        Difficulty? difficulty = combatData.Difficulty.Value;
+        if (difficulty == null) {
+            int randomValue = Random.Range(3, 9);
 
-        for (int i = 0; i < randomValue; i++)
-        {
-            SpawnEnemy();
+            for (int i = 0; i < randomValue; i++)
+            {
+                SpawnEnemy();
+            }
         }
+        else {
+            int randomValue = Random.Range(3, 9);
+            switch (difficulty.Value)
+            {
+                case Difficulty.Easy:
+
+
+                    for (int i = 0; i < randomValue; i++)
+                    {
+                        SpawnDifficultEnemy(enemyPrefab);
+                    }
+                    break;
+                case Difficulty.Medium:
+
+                    for (int i = 0; i < randomValue; i++)
+                    {
+                        SpawnDifficultEnemy(enemyPrefab1);
+                    }
+                    break;
+                case Difficulty.Hard:
+
+                    for (int i = 0; i < randomValue; i++)
+                    {
+                        SpawnDifficultEnemy(enemyPrefab2);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+      
     }
 
     private void SpawnEnemy()
@@ -38,6 +78,25 @@ public class FightsScript : MonoBehaviour
         EnemyMovement enemyScript = newEnemy.GetComponent<EnemyMovement>();
 
         enemyScript.SetPlayer(player);
+        
+    }
+
+    private void SpawnDifficultEnemy(GameObject enemy)
+    {
+        float minX = -5f;
+        float maxX = 5f;
+        float minY = -4f;
+        float maxY = 4f;
+
+        float randomX = Random.Range(minX, maxX);
+        float randomY = Random.Range(minY, maxY);
+        Vector3 spawnPosition = new Vector3(randomX, randomY, 0);
+
+        GameObject newEnemy = Instantiate(enemy, spawnPosition, Quaternion.identity);
+        EnemyMovement enemyScript = newEnemy.GetComponent<EnemyMovement>();
+
+        enemyScript.SetPlayer(player);
+
     }
 
     void Update()
@@ -50,7 +109,7 @@ public class FightsScript : MonoBehaviour
                 StartEnemyTurn();
             }
         }
-      
+   
     }
 
     private bool IsPlayerStopped()
