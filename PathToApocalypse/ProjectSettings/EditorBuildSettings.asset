@@ -6,14 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/MainMenu.unity
+    guid: 45970c26d3a25e444a45f2be9133604c
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: ccf017fab23ee06408f360bee4a4cc0f
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: c2f2f3be1be63d242a6f1ea108326442
   - enabled: 1
     path: Assets/Scenes/Map1.unity
     guid: e1b4dd9fd189b1e4e9a56e327579e130
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 45970c26d3a25e444a45f2be9133604c
   - enabled: 1
     path: Assets/Scenes/level1ApartmentFight.unity
     guid: 164818a493807c9479ad87e04a6156c3
@@ -29,12 +32,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HospitalScene.unity
     guid: 14efa646ff58250448731929b3291e1d
-    path: Assets/Scenes/StoryScene.unity
-    guid: 5db4ea46838f5ad439ee4720518b653e
-  - enabled: 1
-    path: Assets/Scenes/Tutorial.unity
-    guid: ccf017fab23ee06408f360bee4a4cc0f
-  - enabled: 1
-    path: Assets/Scenes/Credits.unity
-    guid: c2f2f3be1be63d242a6f1ea108326442
   m_configObjects: {}
