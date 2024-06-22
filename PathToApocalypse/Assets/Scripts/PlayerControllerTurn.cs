@@ -146,7 +146,12 @@ public class PlayerControllerTurn : MonoBehaviour
             attack3.gameObject.SetActive(false);
         }
 
-   
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        if (enemies.Length <= 0)
+        {
+            WonCombat();
+        }
+
     }
 
 
@@ -503,7 +508,15 @@ public class PlayerControllerTurn : MonoBehaviour
 
     public void GameOver()
     {
-        Time.timeScale = 0;
+        SceneController.Instance.LoadScene("Map1");
+        combatData.IsWonCombat = false;
+    }
+
+    public void WonCombat()
+    {
+        SceneController.Instance.LoadScene("Map1");
+        combatData.IsWonCombat = true;
+
     }
 
     public void MovePlayerAway()

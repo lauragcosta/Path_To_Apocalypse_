@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using Unity.VisualScripting;
 
 
 public class FightsScript : MonoBehaviour
@@ -12,6 +13,7 @@ public class FightsScript : MonoBehaviour
     private bool enemyTurn = false;
     private bool playerTurn = true;
     private bool hasMoved = false;
+
 
     void Start()
     {
@@ -38,6 +40,7 @@ public class FightsScript : MonoBehaviour
         EnemyMovement enemyScript = newEnemy.GetComponent<EnemyMovement>();
 
         enemyScript.SetPlayer(player);
+        
     }
 
     void Update()
@@ -50,7 +53,7 @@ public class FightsScript : MonoBehaviour
                 StartEnemyTurn();
             }
         }
-      
+   
     }
 
     private bool IsPlayerStopped()
