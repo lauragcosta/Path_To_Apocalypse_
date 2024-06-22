@@ -323,7 +323,7 @@ private void MovePlayerWithAttack(Vector3 targetPosition)
         }
 
         WeaponScript swordScript = weapon.GetComponent<WeaponScript>();
-        swordScript.SetDamage(damageTwo);
+       // swordScript.SetDamage(damageTwo);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
