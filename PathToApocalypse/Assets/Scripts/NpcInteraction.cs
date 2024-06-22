@@ -83,7 +83,7 @@ public class NpcInteraction : MonoBehaviour
                             combatData.RewardNeed = Need.Hunger;
                             break;
                     }
-                    SceneController.Instance.LoadScene("level1ApartmentScene");
+                    SceneController.Instance.LoadScene("level1ApartmentFight");
                 }
             }
         }
