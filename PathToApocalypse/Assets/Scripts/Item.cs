@@ -1,15 +1,31 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewItem", menuName = "Inventory/Item")]
+[CreateAssetMenu(fileName = "NewItem", menuName = "Game/Item")]
 public class Item : ScriptableObject
 {
-	public string itemName;
-	public Sprite icon;
+	private string itemName;
+    private Sprite icon;
+	private GameObject itemPrefab;
 	[SerializeField] private int damage;
     [SerializeField] private int damageOne;
     [SerializeField] private int damageTwo;
-    private GameObject itemPrefab;
 
+    public GameObject ItemPrefab
+    {
+        get { return itemPrefab; }
+        set { itemPrefab = value; }
+    }
+
+    public string ItemName
+    {
+        get { return itemName; }
+        set { itemName = value; }
+    }
+    public Sprite Icon
+    {
+        get { return icon; }
+        set { icon = value; }
+    }
 
     public int Damage
     {
