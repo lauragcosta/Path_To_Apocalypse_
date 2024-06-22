@@ -12,6 +12,7 @@ TagManager:
   - Bar
   - SuperMarket
   - Prison
+  - UI
   layers:
   - Default
   - TransparentFX

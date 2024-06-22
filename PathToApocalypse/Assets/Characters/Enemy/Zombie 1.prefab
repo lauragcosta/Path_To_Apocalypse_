@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -7906160644386717522}
   - component: {fileID: 2854215315643104109}
   m_Layer: 0
-  m_Name: Zombie
+  m_Name: Zombie 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c823908d5cf614baa21b5a39b05ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: b259d8d0beba1a542a93f7149168b141, type: 2}
+  enemyData: {fileID: 11400000, guid: 07dfe8032bd6a9f46961edd1dd6bbe75, type: 2}
 --- !u!114 &5675108923797743880
 MonoBehaviour:
   m_ObjectHideFlags: 0

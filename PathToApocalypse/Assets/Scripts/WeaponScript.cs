@@ -2,21 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwordScript : MonoBehaviour
+public class WeaponScript : MonoBehaviour
 {
     [SerializeField] private int damage;
     private bool takeDamage;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
