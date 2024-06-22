@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
+    [SerializeField] private CombatData combatData;
     [SerializeField] private PlayerHealth playerHealth;
     public Slider healthBar;
     public Slider thirstBar;
