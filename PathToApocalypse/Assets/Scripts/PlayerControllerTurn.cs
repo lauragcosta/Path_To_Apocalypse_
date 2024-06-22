@@ -49,8 +49,11 @@ public class PlayerControllerTurn : MonoBehaviour
         animator = GetComponent<Animator>();
 
         agent.agentTypeID = NavMesh.GetSettingsByIndex(0).agentTypeID;
+
         weapon = combatData.WeaponInHand;
-        if (weapon != null)
+
+
+        if (weapon!=null)
         {
 
             Vector3 newPosition = gameObject.transform.position + offset;
