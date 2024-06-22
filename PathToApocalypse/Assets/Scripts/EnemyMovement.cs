@@ -21,6 +21,10 @@ public class EnemyMovement : MonoBehaviour
     private bool takeDamage = false;
     private GameObject mainCamera;
 
+    /// <summary>
+    /// Método chamado uma vez no início para inicializar componentes e variáveis necessárias.
+    /// Obtém componentes como Animator, AudioSource, NavMeshAgent e configura valores iniciais de vida e dano baseados nos dados do inimigo.
+    /// </summary>
     void Start()
 	{
 		animator = GetComponent<Animator>();
@@ -34,12 +38,18 @@ public class EnemyMovement : MonoBehaviour
     
     }
 
-	void Update()
+    /// <summary>
+    /// Método chamado a cada quadro para atualizar a animação do inimigo.
+    /// </summary>
+    void Update()
 	{
 		UpdateAnimation();
     }
 
-   private void UpdateAnimation()
+    /// <summary>
+    /// Atualiza os parâmetros da animação do inimigo com base na velocidade do NavMeshAgent.
+    /// </summary>
+    private void UpdateAnimation()
     {
         // Obtém a velocidade do NavMeshAgent
         Vector3 navMeshVelocity = agent.velocity;
@@ -58,6 +68,11 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Método chamado quando este Collider2D entra em colisão com outro Collider2D.
+    /// Verifica se a colisão é com o jogador, uma parede ou outro inimigo, e executa as ações correspondentes.
+    /// </summary>
+    /// <param name="collision">Informações sobre a colisão.</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -95,12 +110,17 @@ public class EnemyMovement : MonoBehaviour
 
     }
 
-  
+    /// <summary>
+    /// Define a flag 'takeDamage' como falso, permitindo que o inimigo possa atacar novamente.
+    /// </summary>
     private void SetTakeDamage()
     {
         takeDamage = false;
     }
 
+    /// <summary>
+    /// Realiza a animação de ataque do inimigo, para a movimentação e reproduz o efeito sonoro do ataque.
+    /// </summary>
     private void Attack()
     {
         agent.velocity = Vector2.zero;
@@ -108,6 +128,9 @@ public class EnemyMovement : MonoBehaviour
         audioSource.PlayOneShot(audioClip);
     }
 
+    /// <summary>
+    /// Move o inimigo em direção ao jogador com um destino aleatório dentro de uma faixa específica.
+    /// </summary>
     public void MoveEnemy()
 	{
        
@@ -125,14 +148,22 @@ public class EnemyMovement : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Define o jogador como alvo deste inimigo.
+    /// </summary>
+    /// <param name="player">O GameObject representando o jogador.</param>
     public void SetPlayer(GameObject player)
     {
         this.player = player;
     }
 
-
-	public void TakeDamage(int damage) 
+    /// <summary>
+    /// Aplica dano ao inimigo e executa a animação de dano.
+    /// Reproduz um som de efeito de áudio quando o dano é aplicado.
+    /// Destroi o inimigo se sua vida chegar a zero ou menos.
+    /// </summary>
+    /// <param name="damage">Quantidade de dano a ser aplicado.</param>
+    public void TakeDamage(int damage) 
 	{ 
         audioSource.PlayOneShot(audioClip1);
 		life-=damage;
@@ -144,12 +175,18 @@ public class EnemyMovement : MonoBehaviour
 		animator.SetTrigger("Hurt");
 	}
 
-	private void Die()
+    /// <summary>
+    /// Desativa o NavMeshAgent e destrói o GameObject do inimigo.
+    /// </summary>
+    private void Die()
 	{
 		agent.enabled = false;
 		Destroy(gameObject);
 	}
 
+    /// <summary>
+    /// Move o inimigo para longe do jogador atual, calculando uma direção oposta ao jogador com um pequeno desvio aleatório.
+    /// </summary>
     public void MoveAwayFromPlayer()
     {
         
@@ -169,7 +206,11 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-	public int GetLife()
+    /// <summary>
+    /// Retorna o valor atual da vida do inimigo.
+    /// </summary>
+    /// <returns>Valor atual da vida do inimigo.</returns>
+    public int GetLife()
 	{
 		return life;
 	}
