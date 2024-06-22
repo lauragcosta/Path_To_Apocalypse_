@@ -25,7 +25,7 @@ public class PlayerStats : MonoBehaviour
         UpdateThirstBar();
         UpdateHungerBar();
 
-       
+        
     }
 
     private void Update()
