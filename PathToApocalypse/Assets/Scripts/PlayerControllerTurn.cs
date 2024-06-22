@@ -30,9 +30,11 @@ public class PlayerControllerTurn : MonoBehaviour
     private int damageOne = 25;
     private int damageTwo = 35;
 
+	private Inventory inventory;
 
-    // Start is called before the first frame update
-    void Start()
+
+	// Start is called before the first frame update
+	void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -342,5 +344,10 @@ public class PlayerControllerTurn : MonoBehaviour
             agent.SetDestination(newPosition);
         
     }
+
+	void ReceiveItem(Item item)
+	{
+		inventory.Add(item);
+	}
 
 }
