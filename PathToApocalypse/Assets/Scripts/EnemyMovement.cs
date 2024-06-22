@@ -7,12 +7,15 @@ using UnityEngine.UI;
 public class EnemyMovement : MonoBehaviour
 {
 	[SerializeField] private EnemyData enemyData;
+    [SerializeField] private AudioClip audioClip;
+    [SerializeField] private AudioClip audioClip1;
 
-    public int life;
+    private int life;
     private int damage;
     private GameObject player;
     private NavMeshAgent agent;
     private Animator animator;
+    private AudioSource audioSource;
 
 
     private bool takeDamage = false;
@@ -21,10 +24,12 @@ public class EnemyMovement : MonoBehaviour
     void Start()
 	{
 		animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
 		life = enemyData.Life;
 		damage = enemyData.Damage;
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        
 
     
     }
@@ -100,6 +105,7 @@ public class EnemyMovement : MonoBehaviour
     {
         agent.velocity = Vector2.zero;
         animator.SetTrigger("Attack");
+        audioSource.PlayOneShot(audioClip);
     }
 
     public void MoveEnemy()
@@ -128,6 +134,7 @@ public class EnemyMovement : MonoBehaviour
 
 	public void TakeDamage(int damage) 
 	{ 
+        audioSource.PlayOneShot(audioClip1);
 		life-=damage;
 		if (life <= 0)
 		{

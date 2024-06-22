@@ -5,15 +5,18 @@ using UnityEngine;
 public class WeaponScript : MonoBehaviour
 {
     [SerializeField] private Item item;
+    [SerializeField] private AudioClip audioClip;
     private int damage;
     private int damageOne;
     private int damageTwo;
     private bool takeDamage;
     private int attackDamage;
+    private AudioSource audioSource;
     // Start is called before the first frame update
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         damage = item.Damage;
         damageOne = item.DamageOne;
         damageTwo = item.DamageTwo;
@@ -29,6 +32,7 @@ public class WeaponScript : MonoBehaviour
             EnemyMovement enemy = collision.gameObject.GetComponent<EnemyMovement>();
             if (enemy != null && isPlayerTurn && !takeDamage)
             {
+                audioSource.PlayOneShot(audioClip);
                 enemy.TakeDamage(attackDamage);
                 enemy.MoveAwayFromPlayer();
                 takeDamage = true;

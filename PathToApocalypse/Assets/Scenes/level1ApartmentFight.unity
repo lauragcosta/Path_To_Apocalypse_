@@ -8506,6 +8506,7 @@ MonoBehaviour:
   playerHealth: {fileID: 11400000, guid: 3bcc27edf46cf8a40a90424960c09e41, type: 2}
   combatData: {fileID: 11400000, guid: ac24869cecb22a745a42119572e27732, type: 2}
   mainCamera: {fileID: 84841146}
+  audioClip: {fileID: 8300000, guid: 2d6da552d82dba0418abd106f11f524a, type: 3}
   offset: {x: -0.4, y: 0, z: 0}
   probabilityText: {fileID: 325982655}
   attack1: {fileID: 761406966}
@@ -9784,6 +9785,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5132892863096507215, guid: e8a788e3f3c018145badd85801e9933e, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1398842453560380625, guid: e8a788e3f3c018145badd85801e9933e, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
