@@ -5,10 +5,20 @@ public class CombatData : ScriptableObject
 {
     [SerializeField] private GameObject npc; // Optional parameter for a npc if it's from one
     [SerializeField] private bool isWonCombat;
-    [SerializeField] private Difficulty difficulty;
-    [SerializeField] private RewardType rewardType;
-    [SerializeField] private Need rewardNeed; // Optional parameter for a need
+    [SerializeField] private Difficulty? difficulty;
+    [SerializeField] private RewardType? rewardType;
+    [SerializeField] private Need? rewardNeed; // Optional parameter for a need
     [SerializeField] private GameObject rewardPrefab;  // Optional parameter for a prefab
+
+    public void ResetValues()
+    {
+        npc = null;
+        isWonCombat = false;
+        difficulty = null; 
+        rewardType = null; 
+        rewardNeed = null; 
+        rewardPrefab = null; 
+    }
 
     public GameObject Npc { 
         get { return npc; }
