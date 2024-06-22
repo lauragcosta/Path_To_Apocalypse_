@@ -32,7 +32,9 @@ public class PlayerControllerTurn : MonoBehaviour
     private bool takeDamage = false;
     private int noWeaponDamage = 5;
     bool UIActive = false;
-    private GameObject weapon;
+    private GameObject weapon = null;
+    private EnemyMovement enemyScript;
+  
 
     private int damage;
     private int damageOne;
@@ -47,8 +49,11 @@ public class PlayerControllerTurn : MonoBehaviour
         animator = GetComponent<Animator>();
 
         agent.agentTypeID = NavMesh.GetSettingsByIndex(0).agentTypeID;
-       
-        if (weapon != null)
+
+        weapon = combatData.WeaponInHand;
+
+
+        if (weapon!=null)
         {
 
             Vector3 newPosition = gameObject.transform.position + offset;
@@ -66,10 +71,19 @@ public class PlayerControllerTurn : MonoBehaviour
         TextMeshProUGUI attackText = attack1.GetComponentInChildren<TextMeshProUGUI>();
         TextMeshProUGUI attack1Text = attack2.GetComponentInChildren<TextMeshProUGUI>();
         TextMeshProUGUI attack2Text = attack3.GetComponentInChildren<TextMeshProUGUI>();
+        if(weapon != null)
+        {
+            attackText.text = "Attack 1(" + damage + "Damage)";
+            attack1Text.text = "Attack 2(" + damageOne + "Damage)";
+            attack2Text.text = "Attack 3(" + damageTwo + "Damage)";
+        } else
+        {
+            attackText.text = "Attack 1(" + noWeaponDamage + "Damage)";
+            attack1Text.text = "Attack 2(" + noWeaponDamage + "Damage)";
+            attack2Text.text = "Attack 3(" + noWeaponDamage + "Damage)";
+        }
 
-        attackText.text = "Attack 1(" + damage + "Damage)";
-        attack1Text.text = "Attack 2(" + damageOne + "Damage)";
-        attack2Text.text = "Attack 3(" + damageTwo + "Damage)";
+     
     }
 
     void Update()
@@ -88,18 +102,20 @@ public class PlayerControllerTurn : MonoBehaviour
                     {
                         if (hit.collider.CompareTag("Enemy"))
                         {
-                            // L�gica ao clicar em um inimigo
-                            EnemyMovement enemyScript = hit.collider.GetComponent<EnemyMovement>();
+                           
+                            enemyScript = hit.collider.GetComponent<EnemyMovement>();
                              enemyPosition = hit.collider.transform.position;
                             float distance = Vector3.Distance(agent.transform.position, enemyPosition);
 
-                            if (distance <= 5f && weapon!=null)
-                            {
-                            
-                              
-                                ShowUI(enemyPosition);
-                                UIActive = true;
-                            }
+                        if (distance <= 5f && weapon != null)
+                        {
+                            ShowUI(enemyPosition);
+                            UIActive = true;
+                        }
+                        else if(weapon==null){
+                            ShowUIWithoutWeapon(enemyPosition);
+                            UIActive = true;
+                        }
                         }
                     }
                     else
@@ -110,12 +126,24 @@ public class PlayerControllerTurn : MonoBehaviour
             }
             else if(UIActive)
             {
-                attack1.onClick.RemoveAllListeners();
-                attack1.onClick.AddListener(() => MovePlayerWithAttack(enemyPosition));
-                attack2.onClick.RemoveAllListeners();
-                attack2.onClick.AddListener(() => MovePlayerWithAttack1(enemyPosition));
-                attack3.onClick.RemoveAllListeners();
-                attack3.onClick.AddListener(() => MovePlayerWithAttack2(enemyPosition));
+                if(weapon != null) {
+                    attack1.onClick.RemoveAllListeners();
+                    attack1.onClick.AddListener(() => MovePlayerWithAttack(enemyPosition));
+                    attack2.onClick.RemoveAllListeners();
+                    attack2.onClick.AddListener(() => MovePlayerWithAttack1(enemyPosition));
+                    attack3.onClick.RemoveAllListeners();
+                    attack3.onClick.AddListener(() => MovePlayerWithAttack2(enemyPosition));
+                }
+                else if(weapon == null)
+                {
+                    attack1.onClick.RemoveAllListeners();
+                    attack1.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+                    attack2.onClick.RemoveAllListeners();
+                    attack2.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+                    attack3.onClick.RemoveAllListeners();
+                    attack3.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+                }
+
             }
         }
 
@@ -211,6 +239,26 @@ public class PlayerControllerTurn : MonoBehaviour
         attack3.onClick.AddListener(() => MovePlayerWithAttack2(enemyPosition));
     }
 
+    private void ShowUIWithoutWeapon(Vector3 enemyPosition)
+    {
+        probabilityText.gameObject.SetActive(true);
+
+        attack1.gameObject.SetActive(true);
+        attack2.gameObject.SetActive(true);
+        attack3.gameObject.SetActive(true);
+
+
+        probabilityText.text = "Probability:" + GetProbability(enemyPosition);
+
+        // Remove todos os listeners anteriores e adiciona novos
+        attack1.onClick.RemoveAllListeners();
+        attack1.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+        attack2.onClick.RemoveAllListeners();
+        attack2.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+        attack3.onClick.RemoveAllListeners();
+        attack3.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
+    }
+
     private void HideUI()
     {
         probabilityText.gameObject.SetActive(false);
@@ -225,42 +273,45 @@ public class PlayerControllerTurn : MonoBehaviour
     {
         Vector3 navMeshVelocity = agent.velocity;
         Vector2 movement = new Vector2(navMeshVelocity.x, navMeshVelocity.y);
-
-        if (movement.magnitude > 0.1f)
+        if (weapon != null)
         {
-            if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
-            {
-                if (movement.x > 0.1f)
-                {
-                    instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-                    offset.x = 0.4f;
-                    offset.y = 0f;
-                }
-                else if (movement.x < -0.1f)
-                {
-                    instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                    offset.x = -0.4f;
-                    offset.y = 0f;
-                }
-            }
-            else
-            {
-                if (movement.y > 0.1f)
-                {
-                    instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-                    offset.y = 0.2f;
-                    offset.x = 0f;
-                }
-                else if (movement.y < -0.1f)
-                {
-                    instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
-                    offset.y = -0.4f;
-                    offset.x = 0f;
-                }
-            }
 
-            Vector3 newPosition = gameObject.transform.position + offset;
-            instantiatedWeapon.transform.position = newPosition;
+            if (movement.magnitude > 0.1f)
+            {
+                if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
+                {
+                    if (movement.x > 0.1f)
+                    {
+                        instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                        offset.x = 0.4f;
+                        offset.y = 0f;
+                    }
+                    else if (movement.x < -0.1f)
+                    {
+                        instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                        offset.x = -0.4f;
+                        offset.y = 0f;
+                    }
+                }
+                else
+                {
+                    if (movement.y > 0.1f)
+                    {
+                        instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                        offset.y = 0.2f;
+                        offset.x = 0f;
+                    }
+                    else if (movement.y < -0.1f)
+                    {
+                        instantiatedWeapon.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
+                        offset.y = -0.4f;
+                        offset.x = 0f;
+                    }
+                }
+
+                Vector3 newPosition = gameObject.transform.position + offset;
+                instantiatedWeapon.transform.position = newPosition;
+            }
         }
 
         animator.SetFloat("Horizontal", movement.x);
@@ -273,8 +324,31 @@ public class PlayerControllerTurn : MonoBehaviour
         }
     }
 
+    private void MovePlayerWithoutWeapon(Vector3 targetPosition)
+    {
+        HideUI();
+        thirst -= 0.1f;
+        hunger -= 0.1f;
+        if (thirst <= 0 || hunger <= 0)
+        {
+            GameOver();
+        }
 
-private void MovePlayerWithAttack(Vector3 targetPosition)
+        UIActive = false;
+
+        Invoke("DelayEnemyHit", 1f);
+        Invoke("DelayPlayerMoved", 1f);
+        Invoke("MovePlayerAway", 2f);
+        agent.SetDestination(targetPosition);
+        PlayerTurnRoutine();
+    }
+
+    private void DelayEnemyHit()
+    {
+        enemyScript.TakeDamage(noWeaponDamage);
+    }
+
+    private void MovePlayerWithAttack(Vector3 targetPosition)
     {
         HideUI();
         thirst -= 0.1f;
@@ -286,7 +360,7 @@ private void MovePlayerWithAttack(Vector3 targetPosition)
 
         UIActive = false;
         WeaponScript swordScript = weapon.GetComponent<WeaponScript>();
-        swordScript.SetDamage(damage);
+        swordScript.SetAttackDamage(damage);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -304,7 +378,7 @@ private void MovePlayerWithAttack(Vector3 targetPosition)
         }
 
         WeaponScript swordScript = weapon.GetComponent<WeaponScript>();
-        swordScript.SetDamage(damageOne);
+        swordScript.SetAttackDamage(damageOne);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -323,7 +397,7 @@ private void MovePlayerWithAttack(Vector3 targetPosition)
         }
 
         WeaponScript swordScript = weapon.GetComponent<WeaponScript>();
-       // swordScript.SetDamage(damageTwo);
+        swordScript.SetAttackDamage(damageTwo);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -408,7 +482,8 @@ private void MovePlayerWithAttack(Vector3 targetPosition)
             // Verifica se o jogador n�o � nulo antes de acessar o componente PlayerControllerTurn
             if (weapon== null)
             {
-                EnemyMovement enemyScript = GetComponent<EnemyMovement>();
+                 GameObject enemy = collision.gameObject;
+                 enemyScript = enemy.GetComponent<EnemyMovement>();
               
                 // Verifica se � o turno do jogador e se o dano ainda n�o foi aplicado
                 if (!takeDamage && playerTurnRoutine)
