@@ -8,7 +8,7 @@ public class EnemyMovement : MonoBehaviour
 {
 	[SerializeField] private EnemyData enemyData;
 
-    public int life;
+    private int life;
     private int damage;
     private GameObject player;
     private NavMeshAgent agent;
