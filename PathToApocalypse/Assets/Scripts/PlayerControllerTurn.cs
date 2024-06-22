@@ -12,7 +12,7 @@ public class PlayerControllerTurn : MonoBehaviour
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private CombatData combatData;
     [SerializeField] private GameObject mainCamera;
-   
+    [SerializeField] private AudioClip audioClip;
     [SerializeField] private Vector3 offset;
     [SerializeField] private TextMeshProUGUI probabilityText; // Para TextMeshPro
     [SerializeField] private Button attack1;
@@ -34,7 +34,7 @@ public class PlayerControllerTurn : MonoBehaviour
     bool UIActive = false;
     private GameObject weapon = null;
     private EnemyMovement enemyScript;
-  
+    private AudioSource audioSource;
 
 
     private Vector3 enemyPosition;
@@ -44,7 +44,7 @@ public class PlayerControllerTurn : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-
+        audioSource = GetComponent<AudioSource>();
         agent.agentTypeID = NavMesh.GetSettingsByIndex(0).agentTypeID;
 
         weapon = combatData.WeaponInHand;
@@ -465,7 +465,7 @@ public class PlayerControllerTurn : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-
+        audioSource.PlayOneShot(audioClip);
         life -= damage;
         if (life <= 0)
         {
