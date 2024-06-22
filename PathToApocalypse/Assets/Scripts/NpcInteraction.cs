@@ -8,7 +8,7 @@ public class NpcInteraction : MonoBehaviour
 {
     private bool isCharacterInside = false;
     private int currentClicks = 0;
-    private List<GameObject> textObjects = new List<GameObject>();
+    private List<GameObject> textObjects = new();
     private Transform speechBubbleCanvas;
     [SerializeField] private TextMeshProUGUI npcName;
     private Transform speechBubble;

@@ -30,19 +30,19 @@ public class CombatData : ScriptableObject
         set { isWonCombat = value; }
     }
 
-    public Difficulty Difficulty
+    public Difficulty? Difficulty
     {
         get { return difficulty; }
         set { difficulty = value; }
     }
 
-    public RewardType RewardType
+    public RewardType? RewardType
     {
         get { return rewardType; }
         set { rewardType = value; }
     }
 
-    public Need RewardNeed
+    public Need? RewardNeed
     {
         get { return rewardNeed; }
         set { rewardNeed = value; }

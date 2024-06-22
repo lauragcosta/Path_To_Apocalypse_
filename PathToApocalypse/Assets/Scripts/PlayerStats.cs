@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviour
     public Slider thirstBar;
     public Slider hungerBar;
     [SerializeField] private TextMeshProUGUI objectivesText;
-    private List<GameObject> listOfNpcs = new List<GameObject>();
+    private List<GameObject> listOfNpcs = new();
     [SerializeField] private Transform npcBox;
 
     private void Start()
