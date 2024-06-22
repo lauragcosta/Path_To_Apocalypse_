@@ -22,16 +22,10 @@ public class FightsScript : MonoBehaviour
     void Start()
     {
         Difficulty? difficulty = combatData.Difficulty.Value;
-        if (difficulty == null) {
-            int randomValue = Random.Range(3, 9);
+        int randomValue = Random.Range(3, 9);
+        if (difficulty != null) {
 
-            for (int i = 0; i < randomValue; i++)
-            {
-                SpawnEnemy();
-            }
-        }
-        else {
-            int randomValue = Random.Range(3, 9);
+
             switch (difficulty.Value)
             {
                 case Difficulty.Easy:
@@ -39,25 +33,32 @@ public class FightsScript : MonoBehaviour
 
                     for (int i = 0; i < randomValue; i++)
                     {
-                        SpawnDifficultEnemy(enemyPrefab);
+                        SpawnDifficultEnemy(enemyPrefab1);
                     }
                     break;
                 case Difficulty.Medium:
 
                     for (int i = 0; i < randomValue; i++)
                     {
-                        SpawnDifficultEnemy(enemyPrefab1);
+                        SpawnDifficultEnemy(enemyPrefab2);
                     }
                     break;
                 case Difficulty.Hard:
 
                     for (int i = 0; i < randomValue; i++)
                     {
-                        SpawnDifficultEnemy(enemyPrefab2);
+                        SpawnDifficultEnemy(enemyPrefab3);
                     }
                     break;
                 default:
                     break;
+            }
+            
+        }
+        else if(difficulty == null){
+            for (int i = 0; i < randomValue; i++)
+            {
+                SpawnEnemy();
             }
         }
       
