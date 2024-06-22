@@ -1,15 +1,20 @@
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NpcInteraction : MonoBehaviour
 {
     private bool isCharacterInside = false;
     private int currentClicks = 0;
-    private List<GameObject> textObjects = new List<GameObject>();
+    private List<GameObject> textObjects = new();
     private Transform speechBubbleCanvas;
+    [SerializeField] private TextMeshProUGUI npcName;
     private Transform speechBubble;
     private Transform confirmation;
-
+    [SerializeField] private CombatData combatData;
+    
     private void Start()
     {
         confirmation = transform.Find("Confirmation");
@@ -40,18 +45,49 @@ public class NpcInteraction : MonoBehaviour
                 // Move to the next text object
                 currentClicks = PassToNextText(currentClicks);
             }
+        }
 
-            // If all text objects have been shown, show the confirmation
-            if (currentClicks >= textObjects.Count)
+        ShowConfirmationWindow();
+    }
+
+    void ShowConfirmationWindow()
+    {
+        // If all text objects have been shown, show the confirmation
+        if (currentClicks >= textObjects.Count)
+        {
+            speechBubbleCanvas.gameObject.SetActive(false);
+            if (confirmation != null)
             {
-                speechBubbleCanvas.gameObject.SetActive(false);
-                if (confirmation != null)
+                confirmation.gameObject.SetActive(true);
+
+                if (Input.GetKeyDown(KeyCode.K))
                 {
-                    confirmation.gameObject.SetActive(true);
+                    combatData.ResetValues();
+                    combatData.Npc = gameObject;
+                    switch (npcName.text)
+                    {
+                        case "John":
+                            combatData.Difficulty = Difficulty.Medium;
+                            combatData.RewardType = RewardType.Weapon;
+                            //combatData.RewardPrefab = somePrefab;
+                            break;
+                        case "Miguel":
+                            combatData.Difficulty = Difficulty.Hard;
+                            combatData.RewardType = RewardType.Weapon;
+                            combatData.RewardWeapon = "axe";
+                            break;
+                        case "Maria":
+                            combatData.Difficulty = Difficulty.Easy;
+                            combatData.RewardType = RewardType.Need;
+                            combatData.RewardNeed = Need.Hunger;
+                            break;
+                    }
+                    SceneManager.LoadScene("Level1ApartmentFight");
                 }
             }
         }
     }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {

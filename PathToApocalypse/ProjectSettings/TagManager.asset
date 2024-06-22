@@ -8,7 +8,10 @@ TagManager:
   - Enemy
   - Ground
   - Wall
-  - UI
+  - Hospital
+  - Bar
+  - SuperMarket
+  - Prison
   layers:
   - Default
   - TransparentFX

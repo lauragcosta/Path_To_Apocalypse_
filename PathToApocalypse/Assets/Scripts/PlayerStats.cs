@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
@@ -7,9 +10,17 @@ public class PlayerStats : MonoBehaviour
     public Slider healthBar;
     public Slider thirstBar;
     public Slider hungerBar;
+    [SerializeField] private TextMeshProUGUI objectivesText;
+    private List<GameObject> listOfNpcs = new();
+    [SerializeField] private Transform npcBox;
 
     private void Start()
     {
+        if (npcBox != null)
+        {
+            FindAllNpcObjects(npcBox, listOfNpcs);
+            UpdateObjectives();
+        }
         UpdateHealthBar();
         UpdateThirstBar();
         UpdateHungerBar();
@@ -17,9 +28,21 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        UpdateHealthBar();
-        UpdateThirstBar();
-        UpdateHungerBar();
+
+        // You may want to call this less frequently
+        if (CurrentScene("Map1"))
+        {
+            UpdateHealthBar();
+            UpdateThirstBar();
+            UpdateHungerBar();
+        }
+
+    }
+
+    private bool CurrentScene(string sceneName)
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        return currentScene.name == sceneName;
     }
 
     public void TakeDamage(int damage)
@@ -56,5 +79,23 @@ public class PlayerStats : MonoBehaviour
     private void UpdateHungerBar()
     {
         hungerBar.value = playerHealth.Hunger;
+    }
+
+    // Recursive method to find all "NPC" objects
+    void FindAllNpcObjects(Transform parent, List<GameObject> list)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.CompareTag("NPC"))
+            {
+                list.Add(child.gameObject);
+            }
+            FindAllNpcObjects(child, list); // Recursive call
+        }
+    }
+
+    void UpdateObjectives()
+    {
+        objectivesText.text = $"Objectives\r\nHelp people around the map: {listOfNpcs.Count}";
     }
 }
