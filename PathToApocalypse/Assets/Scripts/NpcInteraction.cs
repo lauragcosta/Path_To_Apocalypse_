@@ -55,7 +55,7 @@ public class NpcInteraction : MonoBehaviour
                     confirmation.gameObject.SetActive(true);
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
-                        combatData.IsWonCombat = false;
+                        combatData.ResetValues();
                         combatData.Npc = gameObject;
                         if (npcName.Equals("John"))
                         {
