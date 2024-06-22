@@ -4,19 +4,54 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private List<GameObject> inventorySlots = new List<GameObject>();
+    private List<InventorySlot> inventorySlots = new List<InventorySlot>();
+
     // Start is called before the first frame update
     void Start()
     {
-        foreach (GameObject g in gameObject.GetComponentsInChildren<GameObject>())
+        // Get all child GameObjects with the specified tag and add them to the list
+        foreach (Transform child in transform)
         {
-            inventorySlots.Add(g); 
+            if (child.CompareTag("InventorySlot"))
+            {
+                InventorySlot slot = child.GetComponent<InventorySlot>();
+                if (slot != null)
+                {
+                    inventorySlots.Add(slot);
+                }
+            }
+        }
+
+        AddItemToInventory("screwdriver");
+    }
+
+    public void AddItemToInventory(Item item)
+    {
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (slot.IsEmpty())
+            {
+                slot.AddItemToSlot(item.ItemName);
+                break; // Item added, break the loop
+            }
+        }
+    }
+
+    public void AddItemToInventory(string name)
+    {
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (slot.IsEmpty())
+            {
+                slot.AddItemToSlot(name);
+                break; // Item added, break the loop
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // Optional: Update logic if needed
     }
 }
