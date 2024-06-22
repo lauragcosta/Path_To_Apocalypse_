@@ -70,12 +70,12 @@ public class NpcInteraction : MonoBehaviour
                         case "John":
                             combatData.Difficulty = Difficulty.Medium;
                             combatData.RewardType = RewardType.Weapon;
-                            combatData.RewardWeapon = null;
+                            combatData.RewardWeapon = "dagger";
                             break;
                         case "Miguel":
                             combatData.Difficulty = Difficulty.Hard;
                             combatData.RewardType = RewardType.Weapon;
-                            combatData.RewardWeapon = null;
+                            combatData.RewardWeapon = "axe";
                             break;
                         case "Maria":
                             combatData.Difficulty = Difficulty.Easy;

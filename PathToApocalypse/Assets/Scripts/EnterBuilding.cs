@@ -24,6 +24,7 @@ public class EnterBuilding : MonoBehaviour
                 combatData.Difficulty = Difficulty.Hard;
                 combatData.RewardType = RewardType.Need;
                 combatData.RewardNeed = Need.Health;
+                SceneManager.LoadScene("HospitalScene");
             }
             else if (gameObject.CompareTag("Bar"))
             {
@@ -31,6 +32,7 @@ public class EnterBuilding : MonoBehaviour
                 combatData.Difficulty = Difficulty.Easy;
                 combatData.RewardType = RewardType.Need;
                 combatData.RewardNeed = Need.Thirst;
+                SceneManager.LoadScene("BarScene");
             }
             else if (gameObject.CompareTag("SuperMarket"))
             {
@@ -38,17 +40,19 @@ public class EnterBuilding : MonoBehaviour
                 combatData.Difficulty = Difficulty.Easy;
                 combatData.RewardType = RewardType.Need;
                 combatData.RewardNeed = Need.Hunger;
+                SceneManager.LoadScene("SupermarketScene");
             }
             else if (gameObject.CompareTag("Prison"))
             {
                 combatData.ResetValues();
                 combatData.Difficulty = Difficulty.Hard;
                 combatData.RewardType = RewardType.Weapon;
-                combatData.RewardWeapon = null;
+                combatData.RewardWeapon = "sword";
+                SceneManager.LoadScene("PrisionScene");
             }
 
             // Load the combat scene after setting combat data
-            SceneManager.LoadScene("Level1ApartmentFight");
+            
         }
     }
 
