@@ -4,6 +4,7 @@ using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class NpcInteraction : MonoBehaviour
 {
     private bool isCharacterInside = false;
@@ -14,7 +15,7 @@ public class NpcInteraction : MonoBehaviour
     private Transform speechBubble;
     private Transform confirmation;
     [SerializeField] private CombatData combatData;
-    
+
     private void Start()
     {
         confirmation = transform.Find("Confirmation");
@@ -82,7 +83,7 @@ public class NpcInteraction : MonoBehaviour
                             combatData.RewardNeed = Need.Hunger;
                             break;
                     }
-                    SceneController.Instance.LoadScene("NewSceneName");
+                    SceneController.Instance.LoadScene("level1ApartmentScene");
                 }
             }
         }
