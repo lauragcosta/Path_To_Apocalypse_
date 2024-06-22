@@ -12,7 +12,7 @@ public class InventorySlot : MonoBehaviour
 
     public void addItemToSlot(Item item)
     {
-        item
+        
     }
     void Update()
     {
