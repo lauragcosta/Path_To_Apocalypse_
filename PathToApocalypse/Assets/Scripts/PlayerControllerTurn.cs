@@ -39,8 +39,10 @@ public class PlayerControllerTurn : MonoBehaviour
 
     private Vector3 enemyPosition;
 
-	// Start is called before the first frame update
-	void Start()
+    /// <summary>
+    /// Configuração inicial do jogador ao iniciar a cena.
+    /// </summary>
+    void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -66,6 +68,9 @@ public class PlayerControllerTurn : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Atualizações de cada quadro para o comportamento do jogador durante o seu turno.
+    /// </summary>
     void Update()
     {
         playerTurn = mainCamera.GetComponent<FightsScript>().PlayerTurn();
@@ -155,7 +160,11 @@ public class PlayerControllerTurn : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Calcula a probabilidade de uma determinada posição ser escolhida para movimento com base em vários fatores.
+    /// </summary>
+    /// <param name="position">A posição para a qual calcular a probabilidade.</param>
+    /// <returns>A probabilidade calculada como um inteiro.</returns>
     private int GetProbability(Vector3 position)
     {
         int probability = 100;
@@ -178,6 +187,10 @@ public class PlayerControllerTurn : MonoBehaviour
         return probability;
     }
 
+    /// <summary>
+    /// Verifica se há paredes dentro de um raio especificado ao redor do jogador.
+    /// </summary>
+    /// <returns>O número de paredes encontradas dentro do raio.</returns>
     int IsWallInRadius()
     {
         int walls = 0;
@@ -201,6 +214,11 @@ public class PlayerControllerTurn : MonoBehaviour
         // Se nenhum collider com a tag "wall" for encontrado, retorna false
         return walls;
     }
+
+    /// <summary>
+    /// Exibe a interface do usuário (UI) com opções de ataque e probabilidade de acerto.
+    /// </summary>
+    /// <param name="enemyPosition">A posição do inimigo para o qual a UI está sendo exibida.</param>
     private void ShowUI(Vector3 enemyPosition)
     {
         probabilityText.gameObject.SetActive(true);
@@ -239,6 +257,11 @@ public class PlayerControllerTurn : MonoBehaviour
         attack3.onClick.AddListener(() => MovePlayerWithAttack2(enemyPosition));
     }
 
+
+    /// <summary>
+    /// Exibe a interface do usuário (UI) sem arma equipada, com opções de ataque e probabilidade de acerto.
+    /// </summary>
+    /// <param name="enemyPosition">A posição do inimigo para o qual a UI está sendo exibida.</param>
     private void ShowUIWithoutWeapon(Vector3 enemyPosition)
     {
         probabilityText.gameObject.SetActive(true);
@@ -259,6 +282,9 @@ public class PlayerControllerTurn : MonoBehaviour
         attack3.onClick.AddListener(() => MovePlayerWithoutWeapon(enemyPosition));
     }
 
+    /// <summary>
+    /// Esconde a interface do usuário (UI) de opções de ataque e probabilidade de acerto.
+    /// </summary>
     private void HideUI()
     {
         probabilityText.gameObject.SetActive(false);
@@ -268,7 +294,9 @@ public class PlayerControllerTurn : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Atualiza a animação de movimento do jogador, ajusta a posição da arma (se equipada) e configura parâmetros de animação com base na velocidade do NavMeshAgent.
+    /// </summary>
     private void UpdateMovementAnimation()
     {
         Vector3 navMeshVelocity = agent.velocity;
@@ -324,6 +352,10 @@ public class PlayerControllerTurn : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Move o jogador para uma posição específica sem uma arma equipada.
+    /// </summary>
+    /// <param name="targetPosition">A posição para onde o jogador deve se mover.</param>
     private void MovePlayerWithoutWeapon(Vector3 targetPosition)
     {
         HideUI();
@@ -343,11 +375,19 @@ public class PlayerControllerTurn : MonoBehaviour
         PlayerTurnRoutine();
     }
 
+    /// <summary>
+    /// Adia o momento em que o inimigo sofrerá dano sem arma.
+    /// </summary>
     private void DelayEnemyHit()
     {
         enemyScript.TakeDamage(noWeaponDamage);
     }
 
+
+    /// <summary>
+    /// Move o jogador para uma posição específica e aplica o primeiro ataque com arma equipada.
+    /// </summary>
+    /// <param name="targetPosition">A posição para onde o jogador deve se mover.</param>
     private void MovePlayerWithAttack(Vector3 targetPosition)
     {
         HideUI();
@@ -366,6 +406,10 @@ public class PlayerControllerTurn : MonoBehaviour
         PlayerTurnRoutine();
     }
 
+    /// <summary>
+    /// Move o jogador para uma posição específica e aplica o segundo ataque com arma equipada.
+    /// </summary>
+    /// <param name="targetPosition">A posição para onde o jogador deve se mover.</param>
     private void MovePlayerWithAttack1(Vector3 targetPosition)
     {
         HideUI();
@@ -384,6 +428,10 @@ public class PlayerControllerTurn : MonoBehaviour
         PlayerTurnRoutine();
     }
 
+    /// <summary>
+    /// Move o jogador para uma posição específica e aplica o terceiro ataque com arma equipada.
+    /// </summary>
+    /// <param name="targetPosition">A posição para onde o jogador deve se mover.</param>
     private void MovePlayerWithAttack2(Vector3 targetPosition)
     {
         HideUI();
@@ -403,6 +451,9 @@ public class PlayerControllerTurn : MonoBehaviour
         PlayerTurnRoutine();
     }
 
+    /// <summary>
+    /// Move o jogador para uma posição específica baseada no clique do mouse.
+    /// </summary>
     private void MovePlayer()
     {
         thirst -= 0.1f;
@@ -434,12 +485,18 @@ public class PlayerControllerTurn : MonoBehaviour
         PlayerTurnRoutine();
     }
 
+    /// <summary>
+    /// Invoca o método que indica que o jogador se moveu após um atraso.
+    /// </summary>
     private void DelayPlayerMoved()
     {
         FightsScript level1ApartmentScript = mainCamera.GetComponent<FightsScript>();
         level1ApartmentScript.PlayerMoved();
     }
 
+    /// <summary>
+    /// Rotina do turno do jogador. Define o estado do turno do jogador após um pequeno atraso.
+    /// </summary>
     private IEnumerator PlayerTurnRoutine()
     {
 
@@ -447,22 +504,36 @@ public class PlayerControllerTurn : MonoBehaviour
         playerTurnRoutine = playerTurn;
     }
 
+    /// <summary>
+    /// Define o turno do jogador como ativo.
+    /// </summary>
     public void PlayerTurn()
     {
         playerTurn = true;
     }
 
+    /// <summary>
+    /// Obtém o estado atual do turno do jogador.
+    /// </summary>
+    /// <returns>O estado atual do turno do jogador.</returns>
     public bool GetPlayerTurn()
     {
         return playerTurnRoutine;
     }
 
+    /// <summary>
+    /// Realiza a ação de ataque do jogador.
+    /// </summary>
     public void Attack()
     {
         agent.velocity = Vector2.zero;
         animator.SetTrigger("Attack");
     }
 
+    /// <summary>
+    /// Aplica dano ao jogador.
+    /// </summary>
+    /// <param name="damage">A quantidade de dano a ser aplicada.</param>
     public void TakeDamage(int damage)
     {
         audioSource.PlayOneShot(audioClip);
@@ -475,6 +546,10 @@ public class PlayerControllerTurn : MonoBehaviour
         animator.SetTrigger("Hurt");
     }
 
+    /// <summary>
+    /// Método chamado quando ocorre uma colisão 2D.
+    /// </summary>
+    /// <param name="collision">A colisão que ocorreu.</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -500,18 +575,27 @@ public class PlayerControllerTurn : MonoBehaviour
             MovePlayerAway();
         }
     }
+
+    /// <summary>
+    /// Reseta a variável de controle de dano após um atraso.
+    /// </summary>
     private void SetTakeDamage()
     {
         takeDamage = false;
     }
 
-
+    /// <summary>
+    /// Carrega a cena de jogo principal quando o jogo termina.
+    /// </summary>
     public void GameOver()
     {
         SceneController.Instance.LoadScene("Map1");
         combatData.IsWonCombat = false;
     }
 
+    /// <summary>
+    /// Carrega a cena de jogo principal quando o jogador vence o combate.
+    /// </summary>
     public void WonCombat()
     {
         SceneController.Instance.LoadScene("Map1");
@@ -519,6 +603,9 @@ public class PlayerControllerTurn : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Move o jogador para longe do jogador atual, adicionando uma pequena direção aleatória.
+    /// </summary>
     public void MovePlayerAway()
     {
        
@@ -536,16 +623,29 @@ public class PlayerControllerTurn : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Retorna a vida atual do jogador.
+    /// </summary>
+    /// <returns>A vida atual do jogador.</returns>
     public int GetLife()
     {
         return life;
     }
 
+
+    /// <summary>
+    /// Retorna o nível de sede atual do jogador.
+    /// </summary>
+    /// <returns>O nível de sede atual do jogador.</returns>
     public float GetThirst()
     {
         return thirst;
     }
 
+    /// <summary>
+    /// Retorna o nível de fome atual do jogador.
+    /// </summary>
+    /// <returns>O nível de fome atual do jogador.</returns>
     public float GetHunger()
     {
         return hunger;
