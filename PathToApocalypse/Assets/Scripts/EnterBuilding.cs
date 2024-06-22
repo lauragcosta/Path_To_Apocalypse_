@@ -50,6 +50,7 @@ public class EnterBuilding : MonoBehaviour
             // Load the combat scene after setting combat data
             SceneManager.LoadScene("Level1ApartmentFight");
         }
+    }
 
         void OnTriggerEnter2D(Collider2D other)
         {
@@ -76,5 +77,4 @@ public class EnterBuilding : MonoBehaviour
                 }
             }
         }
-    }
 }
