@@ -4,6 +4,7 @@ using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class NpcInteraction : MonoBehaviour
 {
     private bool isCharacterInside = false;
@@ -14,7 +15,7 @@ public class NpcInteraction : MonoBehaviour
     private Transform speechBubble;
     private Transform confirmation;
     [SerializeField] private CombatData combatData;
-    
+
     private void Start()
     {
         confirmation = transform.Find("Confirmation");
@@ -69,12 +70,12 @@ public class NpcInteraction : MonoBehaviour
                         case "John":
                             combatData.Difficulty = Difficulty.Medium;
                             combatData.RewardType = RewardType.Weapon;
-                            combatData.RewardWeapon = null;
+                            combatData.RewardWeapon = "dagger";
                             break;
                         case "Miguel":
                             combatData.Difficulty = Difficulty.Hard;
                             combatData.RewardType = RewardType.Weapon;
-                            combatData.RewardWeapon = null;
+                            combatData.RewardWeapon = "axe";
                             break;
                         case "Maria":
                             combatData.Difficulty = Difficulty.Easy;
@@ -82,7 +83,7 @@ public class NpcInteraction : MonoBehaviour
                             combatData.RewardNeed = Need.Hunger;
                             break;
                     }
-                    SceneManager.LoadScene("Level1ApartmentFight");
+                    SceneController.Instance.LoadScene("level1ApartmentScene");
                 }
             }
         }
