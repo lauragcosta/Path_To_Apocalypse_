@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEditor;
 using UnityEditor.Search;
 using UnityEngine;
@@ -15,11 +16,14 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private CombatData combatData;
     private Image slotImage;
 
+
     void Start()
     {
         slotImage = gameObject.GetComponentInChildren<Image>();
         allItems = Resources.LoadAll<Item>("Items");
     }
+
+    public bool IsSelected() { return isSelected; }
 
     public void AddItemToSlot(string name)
     { 
