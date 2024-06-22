@@ -15,6 +15,6 @@ MonoBehaviour:
   itemName: screwdriver
   icon: {fileID: 21300000, guid: 563fa5361c6edfe479b6762bf70b2ff0, type: 3}
   itemPrefab: {fileID: 6372256998873079677, guid: ce941b290e2040a4db5922e3e8959041, type: 3}
-  damage: 0
-  damageOne: 0
-  damageTwo: 0
+  damage: 10
+  damageOne: 20
+  damageTwo: 30

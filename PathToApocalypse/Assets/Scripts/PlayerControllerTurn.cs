@@ -36,9 +36,6 @@ public class PlayerControllerTurn : MonoBehaviour
     private EnemyMovement enemyScript;
   
 
-    private int damage;
-    private int damageOne;
-    private int damageTwo;
 
     private Vector3 enemyPosition;
 
@@ -59,31 +56,14 @@ public class PlayerControllerTurn : MonoBehaviour
             Vector3 newPosition = gameObject.transform.position + offset;
             instantiatedWeapon = Instantiate(weapon, newPosition, Quaternion.identity);
             instantiatedWeapon.transform.SetParent(gameObject.transform);
-
         }
         playerTurnRoutine = true;
         life = playerHealth.Health;
         thirst = playerHealth.Thirst;
         hunger = playerHealth.Hunger;
 
-        HideUI();
+        HideUI();    
 
-        TextMeshProUGUI attackText = attack1.GetComponentInChildren<TextMeshProUGUI>();
-        TextMeshProUGUI attack1Text = attack2.GetComponentInChildren<TextMeshProUGUI>();
-        TextMeshProUGUI attack2Text = attack3.GetComponentInChildren<TextMeshProUGUI>();
-        if(weapon != null)
-        {
-            attackText.text = "Attack 1(" + damage + "Damage)";
-            attack1Text.text = "Attack 2(" + damageOne + "Damage)";
-            attack2Text.text = "Attack 3(" + damageTwo + "Damage)";
-        } else
-        {
-            attackText.text = "Attack 1(" + noWeaponDamage + "Damage)";
-            attack1Text.text = "Attack 2(" + noWeaponDamage + "Damage)";
-            attack2Text.text = "Attack 3(" + noWeaponDamage + "Damage)";
-        }
-
-     
     }
 
     void Update()
@@ -98,7 +78,8 @@ public class PlayerControllerTurn : MonoBehaviour
                     Vector2 raycastPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     RaycastHit2D hit = Physics2D.Raycast(raycastPoint, Vector2.zero);
 
-                    if (hit.collider != null)
+                   
+                if (hit.collider != null)
                     {
                         if (hit.collider.CompareTag("Enemy"))
                         {
@@ -107,6 +88,7 @@ public class PlayerControllerTurn : MonoBehaviour
                              enemyPosition = hit.collider.transform.position;
                             float distance = Vector3.Distance(agent.transform.position, enemyPosition);
 
+                         
                         if (distance <= 5f && weapon != null)
                         {
                             ShowUI(enemyPosition);
@@ -116,6 +98,7 @@ public class PlayerControllerTurn : MonoBehaviour
                             ShowUIWithoutWeapon(enemyPosition);
                             UIActive = true;
                         }
+
                         }
                     }
                     else
@@ -123,6 +106,7 @@ public class PlayerControllerTurn : MonoBehaviour
                         HideUI();
                         MovePlayer();
                     }
+
             }
             else if(UIActive)
             {
@@ -145,6 +129,9 @@ public class PlayerControllerTurn : MonoBehaviour
                 }
 
             }
+
+          
+
         }
 
         UpdateMovementAnimation();
@@ -159,21 +146,10 @@ public class PlayerControllerTurn : MonoBehaviour
             attack3.gameObject.SetActive(false);
         }
 
-        if(weapon != null)
-        {
-            GetDamages();
-        }
+   
     }
 
-    private void GetDamages()
-    {
 
-        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
-       
-        damage = instantiatedWeaponScript.GetDamage();
-        damageOne = instantiatedWeaponScript.GetDamageOne();
-        damageTwo = instantiatedWeaponScript.GetDamageTwo();
-    }
 
     private int GetProbability(Vector3 position)
     {
@@ -230,6 +206,24 @@ public class PlayerControllerTurn : MonoBehaviour
         
         
         probabilityText.text = "Probability:" + GetProbability(enemyPosition);
+
+        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
+
+        TextMeshProUGUI attackText = attack1.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI attack1Text = attack2.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI attack2Text = attack3.GetComponentInChildren<TextMeshProUGUI>();
+        if (instantiatedWeapon != null)
+        {
+            attackText.text = "Attack 1(" + instantiatedWeaponScript.GetDamage() + "Damage)";
+            attack1Text.text = "Attack 2(" + instantiatedWeaponScript.GetDamageOne() + "Damage)";
+            attack2Text.text = "Attack 3(" + instantiatedWeaponScript.GetDamageTwo() + "Damage)";
+        }
+        else
+        {
+            attackText.text = "Attack 1(" + noWeaponDamage + "Damage)";
+            attack1Text.text = "Attack 2(" + noWeaponDamage + "Damage)";
+            attack2Text.text = "Attack 3(" + noWeaponDamage + "Damage)";
+        }
 
         // Remove todos os listeners anteriores e adiciona novos
         attack1.onClick.RemoveAllListeners();
@@ -361,7 +355,7 @@ public class PlayerControllerTurn : MonoBehaviour
 
         UIActive = false;
         WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
-        instantiatedWeaponScript.SetAttackDamage(damage);
+        instantiatedWeaponScript.SetAttackDamage(instantiatedWeaponScript.GetDamage());
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -379,7 +373,7 @@ public class PlayerControllerTurn : MonoBehaviour
         }
 
         WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
-        instantiatedWeaponScript.SetAttackDamage(damage);
+        instantiatedWeaponScript.SetAttackDamage(instantiatedWeaponScript.GetDamageOne());
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -398,7 +392,7 @@ public class PlayerControllerTurn : MonoBehaviour
         }
 
         WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
-        instantiatedWeaponScript.SetAttackDamage(damage);
+        instantiatedWeaponScript.SetAttackDamage(instantiatedWeaponScript.GetDamageTwo());
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
