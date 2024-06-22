@@ -10,8 +10,9 @@ using UnityEngine.UI;
 public class PlayerControllerTurn : MonoBehaviour
 {
     [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private CombatData combatData;
     [SerializeField] private GameObject mainCamera;
-    [SerializeField] private GameObject weapon;
+   
     [SerializeField] private Vector3 offset;
     [SerializeField] private TextMeshProUGUI probabilityText; // Para TextMeshPro
     [SerializeField] private Button attack1;
@@ -30,10 +31,12 @@ public class PlayerControllerTurn : MonoBehaviour
     private float hunger;
     private bool takeDamage = false;
     private int noWeaponDamage = 5;
-    private int damage = 15;
-    private int damageOne = 25;
-    private int damageTwo = 35;
     bool UIActive = false;
+    private GameObject weapon;
+
+    private int damage;
+    private int damageOne;
+    private int damageTwo;
 
     private Vector3 enemyPosition;
 
@@ -44,6 +47,7 @@ public class PlayerControllerTurn : MonoBehaviour
         animator = GetComponent<Animator>();
 
         agent.agentTypeID = NavMesh.GetSettingsByIndex(0).agentTypeID;
+       
         if (weapon != null)
         {
 
@@ -126,6 +130,20 @@ public class PlayerControllerTurn : MonoBehaviour
             attack2.gameObject.SetActive(false);
             attack3.gameObject.SetActive(false);
         }
+
+        if(weapon != null)
+        {
+            GetDamages();
+        }
+    }
+
+    private void GetDamages()
+    {
+
+        WeaponScript weaponScript = weapon.GetComponent<WeaponScript>();
+        damage = weaponScript.GetDamage();
+        damageOne = weaponScript.GetDamageOne();
+        damageTwo = weaponScript.GetDamageTwo();
     }
 
     private int GetProbability(Vector3 position)

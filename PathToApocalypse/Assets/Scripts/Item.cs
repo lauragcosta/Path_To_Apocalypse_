@@ -7,6 +7,8 @@ public class Item : ScriptableObject
     private Sprite icon;
 	private GameObject itemPrefab;
 	[SerializeField] private int damage;
+    [SerializeField] private int damageOne;
+    [SerializeField] private int damageTwo;
 
     public GameObject ItemPrefab
     {
@@ -24,10 +26,22 @@ public class Item : ScriptableObject
         get { return icon; }
         set { icon = value; }
     }
+
     public int Damage
     {
         get { return damage; }
         set { damage = value; }
     }
 
+    public int DamageOne
+    {
+        get { return damageOne; }
+        set { damageOne = value; }
+    }
+
+    public int DamageTwo
+    {
+        get { return damageTwo; }
+        set { damageTwo = value; }
+    }
 }
