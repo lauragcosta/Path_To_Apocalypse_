@@ -101,7 +101,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 887453883
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -2014841456, guid: 1a63c2fc994607449b6ab88d0b7752f6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -188,6 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: ce0e62adff823124b86e06a0770b7861, type: 2}
+  life: 0
 --- !u!114 &5675108923797743880
 MonoBehaviour:
   m_ObjectHideFlags: 0
