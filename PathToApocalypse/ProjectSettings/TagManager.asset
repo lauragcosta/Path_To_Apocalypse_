@@ -13,6 +13,7 @@ TagManager:
   - SuperMarket
   - Prison
   - UI
+  - InventorySlot
   layers:
   - Default
   - TransparentFX
