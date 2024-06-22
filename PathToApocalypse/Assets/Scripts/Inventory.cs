@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
+
     // Start is called before the first frame update
     void Start()
     {
+        
         // Get all child GameObjects with the specified tag and add them to the list
         foreach (Transform child in transform)
         {
@@ -49,9 +52,5 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // Optional: Update logic if needed
-    }
+
 }
