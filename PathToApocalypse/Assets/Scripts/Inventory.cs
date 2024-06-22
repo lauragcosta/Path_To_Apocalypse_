@@ -1,24 +1,22 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-	public List<Item> items = new List<Item>();
+    private List<GameObject> inventorySlots = new List<GameObject>();
+    // Start is called before the first frame update
+    void Start()
+    {
+        foreach (GameObject g in gameObject.GetComponentsInChildren<GameObject>())
+        {
+            inventorySlots.Add(g); 
+        }
+    }
 
-	public delegate void OnItemChanged();
-	public OnItemChanged onItemChangedCallback;
-
-	public void Add(Item item)
-	{
-		items.Add(item);
-		if (onItemChangedCallback != null)
-			onItemChangedCallback.Invoke();
-	}
-
-	public void Remove(Item item)
-	{
-		items.Remove(item);
-		if (onItemChangedCallback != null)
-			onItemChangedCallback.Invoke();
-	}
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }

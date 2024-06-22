@@ -40,9 +40,6 @@ public class PlayerControllerTurn : MonoBehaviour
 
     private Vector3 enemyPosition;
 
-	private Inventory inventory;
-
-
 	// Start is called before the first frame update
 	void Start()
     {
@@ -455,11 +452,6 @@ private void MovePlayerWithAttack(Vector3 targetPosition)
             agent.SetDestination(newPosition);
         
     }
-
-	void ReceiveItem(Item item)
-	{
-		inventory.Add(item);
-	}
 
     public int GetLife()
     {
