@@ -50,7 +50,7 @@ public class WeaponScript : MonoBehaviour
         takeDamage = false;
     }
 
-    private void SetAttackDamage(int damage)
+    public void SetAttackDamage(int damage)
     {
         this.attackDamage = damage;
     }

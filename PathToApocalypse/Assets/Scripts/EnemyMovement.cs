@@ -8,7 +8,7 @@ public class EnemyMovement : MonoBehaviour
 {
 	[SerializeField] private EnemyData enemyData;
 
-    private int life;
+    public int life;
     private int damage;
     private GameObject player;
     private NavMeshAgent agent;
@@ -77,7 +77,7 @@ public class EnemyMovement : MonoBehaviour
 				}
             }
         }
-        if (collision.gameObject.layer.Equals("Wall"))
+        if (collision.gameObject.CompareTag("Wall"))
         {
 
             MoveAwayFromPlayer();
@@ -155,9 +155,11 @@ public class EnemyMovement : MonoBehaviour
             // Define a nova posição a 1 unidade de distância na direção oposta
             Vector3 newPosition = transform.position + directionAwayFromPlayer;
 
+        if (newPosition != null)
+        {
             // Move o agente para a nova posição
             agent.SetDestination(newPosition);
-        
+        }
     }
 
 	public int GetLife()
