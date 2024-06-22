@@ -13,7 +13,7 @@ public class TutorialManager : MonoBehaviour
 	{
 		"Welcome to Path to Apocalypse, an immersive 2D action-adventure game where survival is your ultimate goal. To do that, you must navigate through a desolate landscape where NPCs will ask for your help in exchange for the items you need. Your skills will be put to the test as you manage your hunger, thirst, and health while fending off relentless enemies.\n\nPress 'Enter' to continue.",
 		"Welcome to the Game Tutorial!\n\n- Use WASD keys to move.\n- Press Space to attack.\n- Defeat the zombies to gain items.\n- Avoid enemies to stay alive.\n\nPress 'Enter' to continue.",
-		"Find the NPCs thoughout the map and kill all the zombies to complete the goals for the day!\nDon't forget to keep your hunger and thirst bar high!\n\nPress 'Enter' to begin the game!"
+		"Find the NPCs thoughout the map and kill all the zombies to complete the goals for the day!\nDon't forget to keep your hunger and thirst bar high!\n\nPress 'Enter' to return to menu!"
 	};
 
 	void Start()
@@ -32,7 +32,7 @@ public class TutorialManager : MonoBehaviour
 			}
 			else
 			{
-				SceneManager.LoadScene("Map1");
+				SceneManager.LoadScene("MainMenu");
 			}
 		}
 	}
