@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NpcInteraction : MonoBehaviour
 {
@@ -7,8 +10,10 @@ public class NpcInteraction : MonoBehaviour
     private int currentClicks = 0;
     private List<GameObject> textObjects = new List<GameObject>();
     private Transform speechBubbleCanvas;
+    [SerializeField] private TextMeshProUGUI npcName;
     private Transform speechBubble;
     private Transform confirmation;
+    [SerializeField] private CombatData combatData;
 
     private void Start()
     {
@@ -48,6 +53,30 @@ public class NpcInteraction : MonoBehaviour
                 if (confirmation != null)
                 {
                     confirmation.gameObject.SetActive(true);
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        combatData.IsWonCombat = false;
+                        combatData.Npc = gameObject;
+                        if (npcName.Equals("John"))
+                        {
+                            combatData.Difficulty = Difficulty.Medium;
+                            combatData.RewardType = RewardType.Weapon;
+                           // combatData.RewardPrefab = 
+                        }
+                        if (npcName.Equals("Miguel"))
+                        {
+                            combatData.Difficulty = Difficulty.Hard;
+                            combatData.RewardType = RewardType.Weapon;
+                            // combatData.RewardPrefab = 
+                        }
+                        if (npcName.Equals("Maria"))
+                        {
+                            combatData.Difficulty = Difficulty.Easy;
+                            combatData.RewardType = RewardType.Need;
+                            combatData.RewardNeed = Need.Hunger;
+                        }
+                        SceneManager.LoadScene("Level1ApartmentFight");
+                    }
                 }
             }
         }

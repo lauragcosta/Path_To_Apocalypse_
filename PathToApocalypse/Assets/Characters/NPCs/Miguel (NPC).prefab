@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3148105170683884477}
   - component: {fileID: 895903825595948830}
   m_Layer: 5
-  m_Name: Name
+  m_Name: Name-Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -312,6 +312,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da14bab5468cab478ded0d49ffc9767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  npcName: {fileID: 3426331595963197583}
+  combatData: {fileID: 0}
 --- !u!1 &2760643528462976934
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,7 +888,7 @@ GameObject:
   - component: {fileID: 762255267197328261}
   - component: {fileID: 3426331595963197583}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

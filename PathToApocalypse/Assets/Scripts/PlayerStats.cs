@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
@@ -29,9 +30,19 @@ public class PlayerStats : MonoBehaviour
     {
 
         // You may want to call this less frequently
-        UpdateHealthBar();
-        UpdateThirstBar();
-        UpdateHungerBar();
+        if (CurrentScene("Map1"))
+        {
+            UpdateHealthBar();
+            UpdateThirstBar();
+            UpdateHungerBar();
+        }
+
+    }
+
+    private bool CurrentScene(string sceneName)
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        return currentScene.name == sceneName;
     }
 
     public void TakeDamage(int damage)

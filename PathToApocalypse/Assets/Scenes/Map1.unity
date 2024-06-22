@@ -68145,6 +68145,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1472014583}
+    - target: {fileID: 4052589485908754494, guid: a0c9c550c91deb4499fbe9195e00543a, type: 3}
+      propertyPath: combatData
+      value: 
+      objectReference: {fileID: 11400000, guid: ac24869cecb22a745a42119572e27732, type: 2}
     - target: {fileID: 6110169972981130309, guid: a0c9c550c91deb4499fbe9195e00543a, type: 3}
       propertyPath: m_Name
       value: Maria (NPC)
@@ -68182,6 +68186,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5383584645988958846, guid: 4d067b271c9cfa54c9cecbaf3a714881, type: 3}
+      propertyPath: combatData
+      value: 
+      objectReference: {fileID: 11400000, guid: ac24869cecb22a745a42119572e27732, type: 2}
     - target: {fileID: 7248771504712625606, guid: 4d067b271c9cfa54c9cecbaf3a714881, type: 3}
       propertyPath: m_Camera
       value: 

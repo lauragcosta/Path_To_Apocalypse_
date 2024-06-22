@@ -955,6 +955,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da14bab5468cab478ded0d49ffc9767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  npcName: {fileID: 7671178346688761214}
+  combatData: {fileID: 0}
 --- !u!1 &6227249346398412448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,7 +1107,7 @@ GameObject:
   - component: {fileID: 2386801724758122507}
   - component: {fileID: 7671178346688761214}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1240,7 +1242,7 @@ GameObject:
   - component: {fileID: 7154838233149391919}
   - component: {fileID: 1361028685590337276}
   m_Layer: 5
-  m_Name: Name
+  m_Name: Name-Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
