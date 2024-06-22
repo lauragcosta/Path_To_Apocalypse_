@@ -65,13 +65,13 @@ public class PlayerStats : MonoBehaviour
                 case Difficulty.Medium:
                     EatFood(2);
                     DrinkWater(2);
-                    playerInventory.AddItemToInventory(combatData.RewardWeapon);
+                    playerInventory.AddItemToInventory(combatData.RewardWeapon.name);
                     DestroyNpc();
                     break;
                 case Difficulty.Hard:
                     EatFood(4);
                     DrinkWater(4);
-                    playerInventory.AddItemToInventory(combatData.RewardWeapon);
+                    playerInventory.AddItemToInventory(combatData.RewardWeapon.name);
                     DestroyNpc();
                     break;
             }
@@ -116,7 +116,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (combatData.IsWonCombat)
         {
-            playerInventory.AddItemToInventory(combatData.RewardWeapon);
+            playerInventory.AddItemToInventory(combatData.RewardWeapon.name);
             EatFood(5);
             DrinkWater(5);
         }
