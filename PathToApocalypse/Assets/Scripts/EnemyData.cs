@@ -8,6 +8,9 @@ public class EnemyData : ScriptableObject
 {
     [SerializeField] private int life;
     [SerializeField] private int damage;
+    [SerializeField] private float maxDistance;
+    [SerializeField] private float minDistance;
+
     // Start is called before the first frame update
     public int Life
     {
@@ -19,5 +22,17 @@ public class EnemyData : ScriptableObject
     {
         get { return damage; }
         set { damage = value; }
+    }
+
+    public float MaxDistance
+    {
+        get { return maxDistance; }
+        set { maxDistance = value; }
+    }
+
+    public float MinDistance
+    {
+        get { return minDistance; }
+        set { minDistance = value; }
     }
 }

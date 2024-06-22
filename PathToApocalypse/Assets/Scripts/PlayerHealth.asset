@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45957ebde12023747a557f61127ef8fc, type: 3}
   m_Name: PlayerHealth
   m_EditorClassIdentifier: 
-  hunger: 100
-  thirst: 100
+  hunger: 10
+  thirst: 10
   health: 100

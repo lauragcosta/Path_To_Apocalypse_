@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using TMPro;
 
 
-public class Level1ApartmentFight : MonoBehaviour
+public class FightsScript : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject player;
