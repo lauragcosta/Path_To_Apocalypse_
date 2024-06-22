@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
+    private Inventory playerInventory;
+    [SerializeField] private CombatData combatData;
     [SerializeField] private PlayerHealth playerHealth;
     public Slider healthBar;
     public Slider thirstBar;
@@ -16,17 +18,138 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
+        // Find NPC objects and update objectives if npcBox is not null
         if (npcBox != null)
         {
             FindAllNpcObjects(npcBox, listOfNpcs);
             UpdateObjectives();
         }
+
+        // Update player stats bars
         UpdateHealthBar();
         UpdateThirstBar();
         UpdateHungerBar();
 
-        
+        // Check the previous scene and perform actions accordingly
+        switch (SceneController.Instance.GetPreviousScene())
+        {
+            case "level1ApartmentFight":
+                HandleApartmentFight();
+                break;
+            case "BarScene":
+                HandleBarScene();
+                break;
+            case "SupermarketScene":
+                HandleSupermarketScene();
+                break;
+            case "PrisionScene":
+                HandlePrisonScene();
+                break;
+            case "HospitalScene":
+                HandleHospitalScene();
+                break;
+        }
     }
+
+    private void HandleApartmentFight()
+    {
+        if (combatData.IsWonCombat)
+        {
+            switch (combatData.Difficulty)
+            {
+                case Difficulty.Easy:
+                    EatFood(5);
+                    DrinkWater(3);
+                    DestroyNpc();
+                    break;
+                case Difficulty.Medium:
+                    EatFood(2);
+                    DrinkWater(2);
+                    playerInventory.AddItemToInventory(combatData.RewardWeapon);
+                    DestroyNpc();
+                    break;
+                case Difficulty.Hard:
+                    EatFood(4);
+                    DrinkWater(4);
+                    playerInventory.AddItemToInventory(combatData.RewardWeapon);
+                    DestroyNpc();
+                    break;
+            }
+        }
+        else if (!combatData.IsWonCombat)
+        {
+            TakeDamage(20);
+            NotEatFood(3);
+            NotDrinkWater(3);
+        }
+    }
+
+    private void HandleBarScene()
+    {
+        if (combatData.IsWonCombat)
+        {
+            DrinkWater(5);
+        }
+        else
+        {
+            TakeDamage(10);
+            NotEatFood(1);
+            NotDrinkWater(1);
+        }
+    }
+
+    private void HandleSupermarketScene()
+    {
+        if (combatData.IsWonCombat)
+        {
+            EatFood(5);
+        }
+        else
+        {
+            TakeDamage(10);
+            NotEatFood(1);
+            NotDrinkWater(1);
+        }
+    }
+
+    private void HandlePrisonScene()
+    {
+        if (combatData.IsWonCombat)
+        {
+            playerInventory.AddItemToInventory(combatData.RewardWeapon);
+            EatFood(5);
+            DrinkWater(5);
+        }
+        else
+        {
+            TakeDamage(50);
+            NotEatFood(3);
+            NotDrinkWater(3);
+        }
+    }
+
+    private void HandleHospitalScene()
+    {
+        if (combatData.IsWonCombat)
+        {
+            GainHealth(50);
+        }
+        else
+        {
+            TakeDamage(50);
+            NotEatFood(3);
+            NotDrinkWater(3);
+        }
+    }
+
+    private void DestroyNpc()
+    {
+        if (combatData.Npc != null)
+        {
+            Destroy(combatData.Npc.gameObject);
+        }
+    }
+
 
     private void Update()
     {
@@ -54,6 +177,13 @@ public class PlayerStats : MonoBehaviour
         UpdateHealthBar();
     }
 
+    public void GainHealth(int health)
+    {
+        playerHealth.Health += health;
+        if (playerHealth.Health > 100) playerHealth.Health = 100;
+        UpdateHealthBar();
+    }
+
     public void EatFood(int amount)
     {
         playerHealth.Hunger += amount;
@@ -61,10 +191,24 @@ public class PlayerStats : MonoBehaviour
         UpdateHungerBar();
     }
 
+    public void NotEatFood(int amount)
+    {
+        playerHealth.Hunger -= amount;
+        if (playerHealth.Hunger <= 0) Destroy(gameObject);
+        UpdateHungerBar();
+    }
+
     public void DrinkWater(int amount)
     {
         playerHealth.Thirst += amount;
         if (playerHealth.Thirst > 10) playerHealth.Thirst = 10;
+        UpdateThirstBar();
+    }
+
+    public void NotDrinkWater(int amount)
+    {
+        playerHealth.Thirst += amount;
+        if (playerHealth.Thirst < 10) Destroy(gameObject);
         UpdateThirstBar();
     }
 
