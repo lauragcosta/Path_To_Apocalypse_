@@ -15,6 +15,6 @@ MonoBehaviour:
   itemName: sword
   icon: {fileID: 21300000, guid: 017cff1a837df6b4bb8b8b0473976fa1, type: 3}
   itemPrefab: {fileID: 1738715470074029676, guid: 917f0143c00e4e548b14d87e526c1d61, type: 3}
-  damage: 0
-  damageOne: 0
-  damageTwo: 0
+  damage: 25
+  damageOne: 35
+  damageTwo: 45
