@@ -1083,6 +1083,8 @@ MonoBehaviour:
     Difficulty:
     hard
 
+    Reward: axe
+
 
     [Click ''K'' to confirm]'
   m_isRightToLeft: 0

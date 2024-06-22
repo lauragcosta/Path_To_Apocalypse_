@@ -351,6 +351,8 @@ MonoBehaviour:
     Difficulty:
     medium
 
+    Reward: dagger
+
 
     [Click ''K'' to confirm]'
   m_isRightToLeft: 0
