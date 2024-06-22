@@ -29,6 +29,7 @@ public class PlayerControllerTurn : MonoBehaviour
     private float thirst;
     private float hunger;
     private bool takeDamage = false;
+    private int noWeaponDamage = 5;
     private int damage = 15;
     private int damageOne = 25;
     private int damageTwo = 35;
@@ -91,12 +92,13 @@ public class PlayerControllerTurn : MonoBehaviour
                              enemyPosition = hit.collider.transform.position;
                             float distance = Vector3.Distance(agent.transform.position, enemyPosition);
 
-                            if (distance <= 5f)
+                            if (distance <= 5f && weapon!=null)
                             {
-                                UIActive = true;
+                            
+                              
                                 ShowUI(enemyPosition);
+                                UIActive = true;
                             }
-
                         }
                     }
                     else
@@ -396,7 +398,7 @@ private void MovePlayerWithAttack(Vector3 targetPosition)
                 // Verifica se � o turno do jogador e se o dano ainda n�o foi aplicado
                 if (!takeDamage && playerTurnRoutine)
                 {
-                    enemyScript.TakeDamage(damage);
+                    enemyScript.TakeDamage(noWeaponDamage);
                     takeDamage = true;
                     Attack(); // M�todo para realizar a a��o de ataque ap�s aplicar o dano
                     Invoke("SetTakeDamage", 4f);
