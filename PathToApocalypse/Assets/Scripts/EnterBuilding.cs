@@ -1,23 +1,26 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Classe responsável por permitir que o jogador entre em diferentes tipos de edifícios no jogo.
+/// </summary>
 public class EnterBuilding : MonoBehaviour
 {
-    private Transform confirmation;
-    [SerializeField] private CombatData combatData;
-    private bool isCharacterInside = false;
+    private Transform confirmation; // Referência ao objeto de confirmação dentro do edifício
+    [SerializeField] private CombatData combatData; // Dados de combate para passar para a cena de combate
+    private bool isCharacterInside = false; // Indica se o jogador está dentro do gatilho do edifício
 
     void Start()
     {
-        confirmation = transform.Find("confirmation");
+        confirmation = transform.Find("confirmation"); // Procura pelo objeto de confirmação dentro do edifício
     }
 
-    private void Update()
+    void Update()
     {
-        // Check if the player presses 'K' to confirm entering the building
+        // Verifica se o jogador pressiona 'K' para confirmar a entrada no edifício
         if (Input.GetKeyDown(KeyCode.K) && isCharacterInside)
         {
-            // Set combat data based on the building's tag
+            // Define os dados de combate com base na tag do edifício
             if (gameObject.CompareTag("Hospital"))
             {
                 combatData.ResetValues();
@@ -51,34 +54,33 @@ public class EnterBuilding : MonoBehaviour
                 SceneManager.LoadScene("PrisionScene");
             }
 
-            // Load the combat scene after setting combat data
-            
+            // Carrega a cena de combate após definir os dados de combate
         }
     }
 
-        void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
         {
-            if (other.CompareTag("Player"))
+            isCharacterInside = true;
+            // Ativa o objeto de confirmação quando o jogador entra no gatilho do edifício
+            if (confirmation != null)
             {
-                isCharacterInside = true;
-                // Activate the confirmation object when the player enters the building trigger
-                if (confirmation != null)
-                {
-                    confirmation.gameObject.SetActive(true);
-                }
+                confirmation.gameObject.SetActive(true);
             }
         }
+    }
 
-        void OnTriggerExit2D(Collider2D other)
+    void OnTriggerExit2D(Collider2D other)
+    {
+        // Desativa o objeto de confirmação quando o jogador sai do gatilho do edifício
+        if (other.CompareTag("Player"))
         {
-            // Disable the confirmation object when the player exits the building trigger
-            if (other.CompareTag("Player"))
+            isCharacterInside = false;
+            if (confirmation != null)
             {
-                isCharacterInside = false;
-                if (confirmation != null)
-                {
-                    confirmation.gameObject.SetActive(false);
-                }
+                confirmation.gameObject.SetActive(false);
             }
         }
+    }
 }

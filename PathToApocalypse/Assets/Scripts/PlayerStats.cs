@@ -4,33 +4,39 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Classe responsável por gerenciar as estatísticas e ações do jogador.
+/// </summary>
 public class PlayerStats : MonoBehaviour
 {
-    private Inventory playerInventory;
-    [SerializeField] private CombatData combatData;
-    [SerializeField] private PlayerHealth playerHealth;
-    public Slider healthBar;
-    public Slider thirstBar;
-    public Slider hungerBar;
-    [SerializeField] private TextMeshProUGUI objectivesText;
-    private List<GameObject> listOfNpcs = new();
-    [SerializeField] private Transform npcBox;
+    private Inventory playerInventory; // Referência para o inventário do jogador
+    [SerializeField] private CombatData combatData; // Dados de combate do jogador
+    [SerializeField] private PlayerHealth playerHealth; // Saúde, fome e sede do jogador
+    public Slider healthBar; // Barra de saúde do jogador
+    public Slider thirstBar; // Barra de sede do jogador
+    public Slider hungerBar; // Barra de fome do jogador
+    [SerializeField] private TextMeshProUGUI objectivesText; // Texto dos objetivos do jogador
+    private List<GameObject> listOfNpcs = new List<GameObject>(); // Lista de NPCs encontrados
+    [SerializeField] private Transform npcBox; // Caixa que contém os NPCs
 
+    /// <summary>
+    /// Inicializações iniciais ao iniciar a cena.
+    /// </summary>
     private void Start()
     {
-        // Find NPC objects and update objectives if npcBox is not null
+        // Encontra objetos NPC e atualiza objetivos se npcBox não for nulo
         if (npcBox != null)
         {
             FindAllNpcObjects(npcBox, listOfNpcs);
             UpdateObjectives();
         }
 
-        // Update player stats bars
+        // Atualiza as barras de estatísticas do jogador
         UpdateHealthBar();
         UpdateThirstBar();
         UpdateHungerBar();
 
-        // Check the previous scene and perform actions accordingly
+        // Verifica a cena anterior e realiza ações correspondentes
         switch (SceneController.Instance.GetPreviousScene())
         {
             case "level1ApartmentFight":
@@ -51,6 +57,9 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Lida com as ações após vencer a luta no apartamento.
+    /// </summary>
     private void HandleApartmentFight()
     {
         if (combatData.IsWonCombat)
@@ -84,6 +93,9 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Lida com as ações após vencer no Bar.
+    /// </summary>
     private void HandleBarScene()
     {
         if (combatData.IsWonCombat)
@@ -98,6 +110,9 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Lida com as ações após vencer no Supermercado.
+    /// </summary>
     private void HandleSupermarketScene()
     {
         if (combatData.IsWonCombat)
@@ -112,6 +127,9 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Lida com as ações após vencer na Prisão.
+    /// </summary>
     private void HandlePrisonScene()
     {
         if (combatData.IsWonCombat)
@@ -128,6 +146,9 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Lida com as ações após vencer no Hospital.
+    /// </summary>
     private void HandleHospitalScene()
     {
         if (combatData.IsWonCombat)
@@ -142,6 +163,9 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Destroi o NPC após a interação.
+    /// </summary>
     private void DestroyNpc()
     {
         if (combatData.Npc != null)
@@ -150,22 +174,31 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Atualiza as barras de saúde, sede e fome do jogador.
+    /// </summary>
     private void Update()
     {
-
-            UpdateHealthBar();
-            UpdateThirstBar();
-            UpdateHungerBar();
-
+        UpdateHealthBar();
+        UpdateThirstBar();
+        UpdateHungerBar();
     }
 
+    /// <summary>
+    /// Verifica se a cena atual é a cena especificada.
+    /// </summary>
+    /// <param name="sceneName">Nome da cena a ser verificada.</param>
+    /// <returns>True se a cena atual for a cena especificada, caso contrário, false.</returns>
     private bool CurrentScene(string sceneName)
     {
         Scene currentScene = SceneManager.GetActiveScene();
         return currentScene.name == sceneName;
     }
 
+    /// <summary>
+    /// Causa dano ao jogador e atualiza a barra de saúde.
+    /// </summary>
+    /// <param name="damage">Quantidade de dano a ser causado.</param>
     public void TakeDamage(int damage)
     {
         playerHealth.Health -= damage;
@@ -173,6 +206,10 @@ public class PlayerStats : MonoBehaviour
         UpdateHealthBar();
     }
 
+    /// <summary>
+    /// Ganha saúde para o jogador e atualiza a barra de saúde.
+    /// </summary>
+    /// <param name="health">Quantidade de saúde a ser ganha.</param>
     public void GainHealth(int health)
     {
         playerHealth.Health += health;
@@ -180,6 +217,10 @@ public class PlayerStats : MonoBehaviour
         UpdateHealthBar();
     }
 
+    /// <summary>
+    /// Aumenta a fome do jogador e atualiza a barra de fome.
+    /// </summary>
+    /// <param name="amount">Quantidade de aumento da fome.</param>
     public void EatFood(int amount)
     {
         playerHealth.Hunger += amount;
@@ -187,6 +228,10 @@ public class PlayerStats : MonoBehaviour
         UpdateHungerBar();
     }
 
+    /// <summary>
+    /// Reduz a fome do jogador e atualiza a barra de fome.
+    /// </summary>
+    /// <param name="amount">Quantidade de redução da fome.</param>
     public void NotEatFood(int amount)
     {
         playerHealth.Hunger -= amount;
@@ -194,6 +239,10 @@ public class PlayerStats : MonoBehaviour
         UpdateHungerBar();
     }
 
+    /// <summary>
+    /// Aumenta a sede do jogador e atualiza a barra de sede.
+    /// </summary>
+    /// <param name="amount">Quantidade de aumento da sede.</param>
     public void DrinkWater(int amount)
     {
         playerHealth.Thirst += amount;
@@ -201,6 +250,10 @@ public class PlayerStats : MonoBehaviour
         UpdateThirstBar();
     }
 
+    /// <summary>
+    /// Reduz a sede do jogador e atualiza a barra de sede.
+    /// </summary>
+    /// <param name="amount">Quantidade de redução da sede.</param>
     public void NotDrinkWater(int amount)
     {
         playerHealth.Thirst += amount;
@@ -208,22 +261,35 @@ public class PlayerStats : MonoBehaviour
         UpdateThirstBar();
     }
 
+    /// <summary>
+    /// Atualiza a barra de saúde do jogador.
+    /// </summary>
     private void UpdateHealthBar()
     {
         healthBar.value = playerHealth.Health;
     }
 
+    /// <summary>
+    /// Atualiza a barra de sede do jogador.
+    /// </summary>
     private void UpdateThirstBar()
     {
         thirstBar.value = playerHealth.Thirst;
     }
 
+    /// <summary>
+    /// Atualiza a barra de fome do jogador.
+    /// </summary>
     private void UpdateHungerBar()
     {
         hungerBar.value = playerHealth.Hunger;
     }
 
-    // Recursive method to find all "NPC" objects
+    /// <summary>
+    /// Método recursivo para encontrar todos os objetos "NPC".
+    /// </summary>
+    /// <param name="parent">Transform pai a ser pesquisado.</param>
+    /// <param name="list">Lista para armazenar os objetos "NPC".</param>
     void FindAllNpcObjects(Transform parent, List<GameObject> list)
     {
         foreach (Transform child in parent)
@@ -232,10 +298,13 @@ public class PlayerStats : MonoBehaviour
             {
                 list.Add(child.gameObject);
             }
-            FindAllNpcObjects(child, list); // Recursive call
+            FindAllNpcObjects(child, list); // Chamada recursiva
         }
     }
 
+    /// <summary>
+    /// Atualiza o texto dos objetivos do jogador com base na lista de NPCs encontrados.
+    /// </summary>
     void UpdateObjectives()
     {
         objectivesText.text = $"Objectives\r\nHelp people around the map: {listOfNpcs.Count}";
