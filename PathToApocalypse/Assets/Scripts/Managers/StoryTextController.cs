@@ -41,7 +41,7 @@ public class StoryTextController : MonoBehaviour
 		}
 		else
 		{
-			UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
+			UnityEngine.SceneManagement.SceneManager.LoadScene("Tutorial");
 		}
 	}
 }
