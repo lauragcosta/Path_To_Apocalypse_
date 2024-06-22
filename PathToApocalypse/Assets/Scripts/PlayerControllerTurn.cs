@@ -168,10 +168,11 @@ public class PlayerControllerTurn : MonoBehaviour
     private void GetDamages()
     {
 
-        WeaponScript weaponScript = weapon.GetComponent<WeaponScript>();
-        damage = weaponScript.GetDamage();
-        damageOne = weaponScript.GetDamageOne();
-        damageTwo = weaponScript.GetDamageTwo();
+        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
+       
+        damage = instantiatedWeaponScript.GetDamage();
+        damageOne = instantiatedWeaponScript.GetDamageOne();
+        damageTwo = instantiatedWeaponScript.GetDamageTwo();
     }
 
     private int GetProbability(Vector3 position)
@@ -359,8 +360,8 @@ public class PlayerControllerTurn : MonoBehaviour
         }
 
         UIActive = false;
-        WeaponScript swordScript = weapon.GetComponent<WeaponScript>();
-        swordScript.SetAttackDamage(damage);
+        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
+        instantiatedWeaponScript.SetAttackDamage(damage);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -377,8 +378,8 @@ public class PlayerControllerTurn : MonoBehaviour
             GameOver();
         }
 
-        WeaponScript swordScript = weapon.GetComponent<WeaponScript>();
-        swordScript.SetAttackDamage(damageOne);
+        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
+        instantiatedWeaponScript.SetAttackDamage(damage);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
@@ -396,8 +397,8 @@ public class PlayerControllerTurn : MonoBehaviour
             GameOver();
         }
 
-        WeaponScript swordScript = weapon.GetComponent<WeaponScript>();
-        swordScript.SetAttackDamage(damageTwo);
+        WeaponScript instantiatedWeaponScript = instantiatedWeapon.GetComponent<WeaponScript>();
+        instantiatedWeaponScript.SetAttackDamage(damage);
         Invoke("DelayPlayerMoved", 1f);
         agent.SetDestination(targetPosition);
         PlayerTurnRoutine();
