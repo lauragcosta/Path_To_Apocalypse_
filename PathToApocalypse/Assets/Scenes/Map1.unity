@@ -5003,6 +5003,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2004213921}
     - target: {fileID: 4410122730694461852, guid: 141291ea6f1ea1a43adf1ac79b822613, type: 3}
+      propertyPath: combatData
+      value: 
+      objectReference: {fileID: 11400000, guid: ac24869cecb22a745a42119572e27732, type: 2}
+    - target: {fileID: 4410122730694461852, guid: 141291ea6f1ea1a43adf1ac79b822613, type: 3}
       propertyPath: objectivesText
       value: 
       objectReference: {fileID: 1171000998}

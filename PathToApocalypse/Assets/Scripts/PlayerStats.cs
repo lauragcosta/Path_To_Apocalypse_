@@ -154,13 +154,9 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
 
-        // You may want to call this less frequently
-        if (CurrentScene("Map1"))
-        {
             UpdateHealthBar();
             UpdateThirstBar();
             UpdateHungerBar();
-        }
 
     }
 

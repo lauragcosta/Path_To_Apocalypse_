@@ -24,7 +24,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        AddItemToInventory("screwdriver");
+       AddItemToInventory("screwdriver");
     }
 
     public void AddItemToInventory(Item item)
