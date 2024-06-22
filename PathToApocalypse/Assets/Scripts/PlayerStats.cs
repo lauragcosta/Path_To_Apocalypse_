@@ -25,7 +25,7 @@ public class PlayerStats : MonoBehaviour
         UpdateThirstBar();
         UpdateHungerBar();
 
-        if(SceneController.Instance.GetPreviousScene().Equals("")
+       
     }
 
     private void Update()
