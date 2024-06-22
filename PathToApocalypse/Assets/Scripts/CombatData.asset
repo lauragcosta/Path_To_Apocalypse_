@@ -14,7 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npc: {fileID: 0}
   isWonCombat: 0
-  difficulty: 0
-  rewardType: 0
-  rewardNeed: 0
-  rewardPrefab: {fileID: 0}
+  rewardWeapon: 
+  weaponInHand: {fileID: 6372256998873079677, guid: ce941b290e2040a4db5922e3e8959041, type: 3}
