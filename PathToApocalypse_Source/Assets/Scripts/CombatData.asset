@@ -15,4 +15,4 @@ MonoBehaviour:
   npc: {fileID: 0}
   isWonCombat: 0
   rewardWeapon: 
-  weaponInHand: {fileID: 6372256998873079677, guid: ce941b290e2040a4db5922e3e8959041, type: 3}
+  weaponInHand: {fileID: 1738715470074029676, guid: 917f0143c00e4e548b14d87e526c1d61, type: 3}

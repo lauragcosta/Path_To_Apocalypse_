@@ -23,7 +23,7 @@ public class EnterBuilding : MonoBehaviour
             // Define os dados de combate com base na tag do edifício
             if (gameObject.CompareTag("Hospital"))
             {
-                combatData.ResetValues();
+              //  combatData.ResetValues();
                 combatData.Difficulty = Difficulty.Hard;
                 combatData.RewardType = RewardType.Need;
                 combatData.RewardNeed = Need.Health;
@@ -31,7 +31,7 @@ public class EnterBuilding : MonoBehaviour
             }
             else if (gameObject.CompareTag("Bar"))
             {
-                combatData.ResetValues();
+                //  combatData.ResetValues();
                 combatData.Difficulty = Difficulty.Easy;
                 combatData.RewardType = RewardType.Need;
                 combatData.RewardNeed = Need.Thirst;
@@ -39,7 +39,7 @@ public class EnterBuilding : MonoBehaviour
             }
             else if (gameObject.CompareTag("SuperMarket"))
             {
-                combatData.ResetValues();
+                //  combatData.ResetValues();
                 combatData.Difficulty = Difficulty.Easy;
                 combatData.RewardType = RewardType.Need;
                 combatData.RewardNeed = Need.Hunger;
@@ -47,7 +47,7 @@ public class EnterBuilding : MonoBehaviour
             }
             else if (gameObject.CompareTag("Prison"))
             {
-                combatData.ResetValues();
+                //   combatData.ResetValues();
                 combatData.Difficulty = Difficulty.Hard;
                 combatData.RewardType = RewardType.Weapon;
                 combatData.RewardWeapon = "sword";

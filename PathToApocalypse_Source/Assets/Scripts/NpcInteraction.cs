@@ -18,11 +18,13 @@ public class NpcInteraction : MonoBehaviour
     private Transform confirmation; // Referência ao painel de confirmação
     [SerializeField] private CombatData combatData; // Dados de combate compartilhados
 
+
     /// <summary>
     /// Inicializa as referências e configura os elementos de UI.
     /// </summary>
     private void Start()
     {
+       
         // Inicializa o painel de confirmação e o desativa
         confirmation = transform.Find("Confirmation");
         confirmation.gameObject.SetActive(false);
@@ -77,7 +79,7 @@ public class NpcInteraction : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.K))
                 {
                     // Configura os dados de combate com base no NPC e carrega a cena de combate
-                    combatData.ResetValues();
+                  //  combatData.ResetValues();
                     combatData.Npc = gameObject;
                     switch (npcName.text)
                     {
